@@ -1,0 +1,5 @@
+//This file contains the default settings for the Number Guessing Game. 
+
+Game Size = 100
+Game Length = 10
+Hints = true
