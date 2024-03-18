@@ -46,13 +46,13 @@ pub fn game(settings: (u32, u32, bool)) -> String {
             //Affiche un message indiquant que le dernier numéro deviné est plus petit que celui cherché.
             Ordering::Less => {
                 cls_title();
-                println!("{guess} is too small! {} tries left", max_tries - tries); //Afiche que le numéro deviné est trop petit.
+                println!("{} is too small! {} {} left", guess, max_tries - tries - 1, if tries == 1 {"trie"} else {"tries"}); //Afiche que le numéro deviné est trop petit.
                 if small_guess < guess {small_guess = guess}; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le dernier numéro deviné est plus grand que celui cherché.
             Ordering::Greater => {
                 cls_title();
-                println!("{guess} is too big! {} tries left", max_tries - tries); //Affiche que le numéro deviné est trop grand.
+                println!("{} is too big! {} {} left", guess, max_tries - tries - 1, if tries == 1 {"trie"} else {"tries"}); //Affiche que le numéro deviné est trop grand.
                 if large_guess > guess {large_guess = guess}; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
