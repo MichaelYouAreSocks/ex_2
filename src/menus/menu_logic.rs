@@ -48,11 +48,8 @@ pub fn main_menu_logic(mut first_cycle: bool, mut msg: String, mut settings:(u32
 
 pub fn options_menu_logic(mut settings:(u32, u32, bool)) -> (u32, u32, bool) {
     
-    let mut option_size;
-    let mut option_tries;
-    let mut option_hint;
     loop {
-        (option_size, option_tries, option_hint) = settings;
+        let (mut option_size, mut option_tries, mut option_hint) = settings;
         //Affiche le menu des options avec leur configuration actuel.
         match options_menu(settings) {
             //Retourne au menu d'acueil.

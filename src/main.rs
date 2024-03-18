@@ -11,20 +11,18 @@ fn main() {
     let mut option_size = 100;  //"option_size" permet de choisir la taille de la plage à chercher chaque manche.
     let mut option_tries = 10;   //"option_tries" permet de choisir le nombre de tentatives par manche.
     let mut option_hint = false; //"oprion_hint" permet de choisir si l'on veut des indices ou pas.
-    let mut settings = (option_size, option_tries, option_hint); //Concatenage des réglages d'option.
-    let mut stop;
-    let mut msg = "".to_string(); //
+    let mut settings = (option_size, option_tries, option_hint); //Concatène les réglages du jeu.
+    let mut stop; //Permet de quiter le jeu.
+    let mut msg = "".to_string(); //Var permettant la concaténation des messages pour l'utilisateur.
 
     cls_title();
 
     //Boucle contenant le program.
     loop {
-        println!("{}\n{},{},{}",first_cycle,option_size,option_tries,option_hint);
-
         (stop,first_cycle,msg,(option_size, option_tries, option_hint)) = main_menu_logic(first_cycle,msg,settings);
+
         settings = (option_size, option_tries, option_hint);
 
         if stop == true {break} else {continue};
     };
-
 }

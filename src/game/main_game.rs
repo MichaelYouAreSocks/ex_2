@@ -10,15 +10,16 @@ use rand::Rng;
 pub fn game(settings: (u32, u32, bool)) -> String {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (max_range, max_tries, guess_hint) = settings;
+    let (max_range, max_tries, guess_hint) = settings; //Déconcatène "settings" en ses différent composants.
     let min_range = 0; //Permet de changer la valeur minimum de la plage à chercher.
-    let mut guess;
-    let mut msg;
+    let mut guess; //Déclare la var "guess".
+    let mut msg; //déclare la vat "msg".
     let mut small_guess = min_range; //Indice min initial.
     let mut large_guess = max_range + 1; //Indice max initial.
     let secret_number = {
-        rand::thread_rng().gen_range(min_range..=max_range) //Génère un nombre réel entier se trouvant entre "min_range et max_range".
-    };
+        rand::thread_rng()
+        .gen_range(min_range..=max_range)
+    }; //Génère un nombre réel entier se trouvant entre "min_range et max_range".
 
     //Boucle contenant le jeu.
     for tries in min_range..max_tries {
