@@ -10,15 +10,14 @@ use rand::Rng;
 pub fn game(settings: (u32, u32, bool)) -> String {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (max_range, max_tries, guess_hint) = settings; //Déconcatène "settings" en ses différent composants.
+    let (max_range, max_tries, guess_hint) = settings; //Déconcatène "settings".
     let min_range = 0; //Permet de changer la valeur minimum de la plage à chercher.
     let mut guess; //Déclare la var "guess".
     let mut msg; //déclare la vat "msg".
     let mut small_guess = min_range; //Indice min initial.
     let mut large_guess = max_range + 1; //Indice max initial.
     let secret_number = {
-        rand::thread_rng()
-        .gen_range(min_range..=max_range)
+        rand::thread_rng().gen_range(min_range..=max_range)
     }; //Génère un nombre réel entier se trouvant entre "min_range et max_range".
 
     //Boucle contenant le jeu.
@@ -46,22 +45,44 @@ pub fn game(settings: (u32, u32, bool)) -> String {
             //Affiche un message indiquant que le dernier numéro deviné est plus petit que celui cherché.
             Ordering::Less => {
                 cls_title();
-                println!("{} is too small! {} {} left", guess, max_tries - tries - 1, if tries == 1 {"trie"} else {"tries"}); //Afiche que le numéro deviné est trop petit.
-                if small_guess < guess {small_guess = guess}; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
+                println!(
+                    "{} is too small! {} {} left", 
+                    guess, 
+                    max_tries - tries - 1, 
+                    if tries == 1 {"trie"} else {"tries"}
+                ); //Afiche que le numéro deviné est trop petit.
+
+                if small_guess < guess {
+                    small_guess = guess
+                }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le dernier numéro deviné est plus grand que celui cherché.
             Ordering::Greater => {
                 cls_title();
-                println!("{} is too big! {} {} left", guess, max_tries - tries - 1, if tries == 1 {"trie"} else {"tries"}); //Affiche que le numéro deviné est trop grand.
-                if large_guess > guess {large_guess = guess}; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
+                println!(
+                    "{} is too big! {} {} left", 
+                    guess, 
+                    max_tries - tries - 1, 
+                    if tries == 1 {"trie"} else {"tries"}
+                ); //Affiche que le numéro deviné est trop grand.
+
+                if large_guess > guess {
+                    large_guess = guess
+                }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
             Ordering::Equal => {
                 cls_title();
-                return format!("You win! The correct number was: '{}'",secret_number); //Indique que le jeu n'a pas rencontré d'erreur.
+                return format!(
+                    "You win! The correct number was: '{}'",
+                    secret_number
+                ); //Indique que le jeu n'a pas rencontré d'erreur.
             }
         };
     };
     cls_title();
-    return format!("You loose! The secret number was {}", secret_number); //Indique au joueur qu'il a perdu et quel était le numéro cherché.
+    return format!(
+        "You loose! The secret number was {}",
+        secret_number
+    ); //Indique au joueur qu'il a perdu et quel était le numéro cherché.
 }

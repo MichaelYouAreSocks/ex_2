@@ -15,7 +15,9 @@ use crate::{
     },
 };
 
-pub fn main_menu_logic(mut first_cycle: bool, mut msg: String, mut settings:(u32, u32, bool)) -> (bool,bool,String,(u32, u32, bool)) {
+pub fn main_menu_logic(
+    mut first_cycle: bool, mut msg: String, mut settings:(u32, u32, bool)
+) -> (bool,bool,String,(u32, u32, bool)) {
 
     //Quite le progam si le joueur veut plus jouer.
     if true == match main_menu(first_cycle, &msg) {
