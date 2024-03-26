@@ -7,21 +7,20 @@ use crate::game::game_logic::{
 use rand::Rng;
 
 //Fonction de jeu.
-pub fn game(settings: (u32, u32, bool)) -> String {
+pub fn game(settings: (u32, u32, u32, bool)) -> String {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (max_range, max_tries, guess_hint) = settings; //Déconcatène "settings".
-    let min_range = 0; //Permet de changer la valeur minimum de la plage à chercher.
+    let (max_range, min_range, max_tries, guess_hint) = settings; //Déconcatène "settings".
     let mut guess; //Déclare la var "guess".
     let mut msg; //déclare la vat "msg".
-    let mut small_guess = min_range; //Indice min initial.
+    let mut small_guess = min_range - 1; //Indice min initial.
     let mut large_guess = max_range + 1; //Indice max initial.
     let secret_number = {
         rand::thread_rng().gen_range(min_range..=max_range)
     }; //Génère un nombre réel entier se trouvant entre "min_range et max_range".
 
     //Boucle contenant le jeu.
-    for tries in min_range..max_tries {
+    for tries in min_range - 1..max_tries {
 
         //Affiche les indices si selectionné dans les options.
         msg = match guess_hint {

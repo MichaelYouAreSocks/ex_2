@@ -6,12 +6,16 @@ use ex_2::{
 
 //Logiciel mère.
 fn main() {
+
     //Initialisation des vars, constantes et plages si applicable.
     let mut first_cycle = true; //"first_cycle" détecte si le joueur joue sa première partie.
-    let mut option_size = 100;  //"option_size" permet de choisir la taille de la plage à chercher chaque manche.
-    let mut option_tries = 10;   //"option_tries" permet de choisir le nombre de tentatives par manche.
-    let mut option_hint = false; //"oprion_hint" permet de choisir si l'on veut des indices ou pas.
-    let mut settings = (option_size, option_tries, option_hint); //Concatène les réglages du jeu.
+    let (
+        mut option_size_max, 
+        mut option_size_min, 
+        mut option_tries, 
+        mut option_hint
+    ) = default_settings(); //
+    let mut settings; //Concatène les réglages du jeu.
     let mut stop; //Permet de quiter le jeu.
     let mut msg = "".to_string(); //Var permettant la concaténation des messages pour l'utilisateur.
 
@@ -19,10 +23,20 @@ fn main() {
 
     //Boucle contenant le program.
     loop {
-        (stop,first_cycle,msg,(option_size, option_tries, option_hint)) = main_menu_logic(first_cycle,msg,settings);
+        settings = (option_size_max, option_size_min, option_tries, option_hint);
 
-        settings = (option_size, option_tries, option_hint);
+        (stop,
+            first_cycle,
+            msg,
+            (
+                option_size_max, 
+                option_size_min, 
+                option_tries, 
+                option_hint
+            )
+        ) = main_menu_logic(first_cycle,msg,settings);
 
         if stop == true {break} else {continue};
     };
 }
+

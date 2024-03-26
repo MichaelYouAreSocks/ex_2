@@ -59,18 +59,18 @@ pub fn main_menu(first_cycle: bool, msg: &String) -> u8 {
 }
 
 //Menu d'options de jeu.
-pub fn options_menu(settings:(u32, u32, bool)) -> u32 {
+pub fn options_menu(settings:(u32, u32, u32, bool)) -> u32 {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (option_size, option_tries, option_hint) = settings;
+    let (option_size_max, option_size_min, option_tries, option_hint) = settings;
     let mut msg;
     let mut input;
 
     loop {
         //Concatène le menu des option.
         msg = format!(
-            "Options:\n{}{}\n{}{}\n{}{}\n{}",
-            "1 -> Size of search.\t: ", option_size,
+            "Options:\n{}{}{}{}\n{}{}\n{}{}\n{}",
+            "1 -> Size of search.\tMin: ", option_size_min, "\tMax: ", option_size_max,
             "2 -> Number of tries.\t: ", option_tries,
             "3 -> Game hints.\t: ", option_hint,
             "0 -> Back to main menu."

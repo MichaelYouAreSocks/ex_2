@@ -54,7 +54,7 @@ pub fn yes_no_else_input(msg: String, mut input:String, wrong: bool) -> String {
         true => {
             cls_title();
             println!("{}\n'{}' isn't a valid input. Please try again.", msg, input);
-            input = String::new() //Vide le contenu de la var "input".
+            input = String::new() //Purge la var "input".
         },
     };
 

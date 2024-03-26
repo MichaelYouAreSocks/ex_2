@@ -16,8 +16,8 @@ use crate::{
 };
 
 pub fn main_menu_logic(
-    mut first_cycle: bool, mut msg: String, mut settings:(u32, u32, bool)
-) -> (bool,bool,String,(u32, u32, bool)) {
+    mut first_cycle: bool, mut msg: String, mut settings:(u32, u32, u32, bool)
+) -> (bool,bool,String,(u32, u32, u32, bool)) {
 
     //Quite le progam si le joueur veut plus jouer.
     if true == match main_menu(first_cycle, &msg) {
@@ -48,10 +48,10 @@ pub fn main_menu_logic(
     } {return (true, first_cycle, msg, settings)} else {return (false, first_cycle, msg, settings)}
 }
 
-pub fn options_menu_logic(mut settings:(u32, u32, bool)) -> (u32, u32, bool) {
+pub fn options_menu_logic(mut settings:(u32, u32, u32, bool)) -> (u32, u32, u32, bool) {
     
     loop {
-        let (mut option_size, mut option_tries, mut option_hint) = settings;
+        let (mut option_size_max, option_size_min, mut option_tries, mut option_hint) = settings;
         //Affiche le menu des options avec leur configuration actuel.
         match options_menu(settings) {
             //Retourne au menu d'acueil.
@@ -62,7 +62,7 @@ pub fn options_menu_logic(mut settings:(u32, u32, bool)) -> (u32, u32, bool) {
             //Option de la taille de la plage à chercher chaque manche.
             1 => {
                 cls_title();
-                option_size = game_size(option_size)
+                option_size_max = game_size(option_size_max)
             },
             //Option du nombre de tentatives par manches.
             2 => {
@@ -80,7 +80,7 @@ pub fn options_menu_logic(mut settings:(u32, u32, bool)) -> (u32, u32, bool) {
                 continue
             },
         };
-        settings = (option_size, option_tries, option_hint);
+        settings = (option_size_max, option_size_min, option_tries, option_hint);
     };
     settings
 }
