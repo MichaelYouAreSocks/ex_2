@@ -6,8 +6,13 @@ use crate::game::game_logic::{
         yes_no_else_input,
     }
 };
-use std::fs::{
-    read_to_string, write, OpenOptions
+use std::{
+    fs::{
+        read_to_string,
+        write,
+        OpenOptions,
+    },
+    u32,
 };
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
@@ -18,14 +23,21 @@ pub fn default_settings() -> (u32, u32, u32, bool) {
     let mut min_range = 1;
     let mut max_tries = 10;
     let mut guess_hint = true;
-    let mut settings_amount;
-    let mut settings = Vec::new();
+    let mut amount_settings = 4;
+    let mut loop_count;
+    let mut settings;
+    let mut err_name;
+    let mut err_msg;
 
     let msg = format!(
         "//This file contains the settings for the Number Guessing Game.\n\n{}\n\n{}\n\n{}\n\n{}",
+
         "//Up to what number do you want to guess?\n100",
+        
         "//From what number do you want to guess?\n1",
+        
         "//How many atempts do you want to guess the random number?\n10",
+        
         "//Do you want hints in your game?\ntrue"
     );
 
@@ -44,34 +56,67 @@ pub fn default_settings() -> (u32, u32, u32, bool) {
 
         let mut settings_raw = settings_raw.lines();
 
-        for _ in 1..=3 {settings_raw.next();};
-        for settings_amount in 1..=4 {
+        for loop_count in amount_settings..=1 {
+            
+            //Concatène le message d'erreur de la lecture d'un fichier d'options déja présent.
+            let (err_name,err_msg) = match loop_count {
+                4 => ("max_range","a number from 1 to 4'294'967'295"),
+                3 => ("min_range","a number from 0 to 4'294'967'294"),
+                2 => ("max_tries","a number from 1 to 4'294'967'295"),
+                1 => ("guess_hint","'true' or 'false'"),
+            };
 
-            settings = settings_raw
+            let settings = settings_raw
+            .next_back()
+            .unwrap()
+            .parse()
+            .expect(
+                format!(
+                    "'{}' should be {}.",err_name,err_msg
+                )
+                .as_str()
+            );
+            for _ in 1..=2 {settings_raw.next_back();};
+
+            let settings = settings_raw
                 .next()
-                .unwrap()
-                .parse()
-                .expect("'guess_hint' should be true or false.");
-            for _ in 1..=2 {settings_raw.next();};
-            settings.push::<u32>(settings_amount);
+                .unwrap();
 
-        }
+            let Ok(settings) = settings
+            .parse()
+            .expect(
+                format!(
+                    "'{}' should be {}.",
+                    err_name,
+                    err_msg,
+                )
+                .as_str()
+            );
+            let Err(settings) = settings
+            .parse()
+            .expect(
+                format!(
+                    "'{}' should be {}.",
+                    err_name,
+                    err_msg,
+                )
+                .as_str()
+            );
+        };
+
     } else {
 
         //Écrit le contenu de la var "msg" dans le fichier "Settings.txt" 
         //et affiche le contenu de la var "write_err_msg" si une erreur est encontré.
         if let Ok(settings_raw) = OpenOptions::new()
-            .write(true)
-            .create(true)
-            .open("Settings.txt") 
-        {
-                write("Settings.txt", msg)
-            .expect("Settings.txt ");
+        .write(true)
+        .create(true)
+        .open("Settings.txt") {
+            write("Settings.txt", msg)
+            .expect("Settings.txt");
         } else {
-            
+            println!("{}",read_err_msg);
             };
-
-        println!("{}",read_err_msg);
 
     };
 
