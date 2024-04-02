@@ -1,43 +1,42 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use std::cmp::Ordering;
-use crate::game::game_logic::{
+use crate::{
+    game::game_logic::{
         cls_scr::cls_title,
         questions::numeric_input,
+    },
+    Settings,
 };
 use rand::Rng;
 
 //Fonction de jeu.
-pub fn game(settings: (u32, u32, u32, bool)) -> String {
+pub fn game(mut settings: Settings) -> String {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (max_range, min_range, max_tries, guess_hint) = settings; //Déconcatène "settings".
     let mut guess; //Déclare la var "guess".
-    let mut msg; //déclare la vat "msg".
-    let mut small_guess = min_range - 1; //Indice min initial.
-    let mut large_guess = max_range + 1; //Indice max initial.
+    let mut small_guess = settings.min_range - 1; //Indice min initial.
+    let mut large_guess = settings.max_range + 1; //Indice max initial.
     let secret_number = {
-        rand::thread_rng().gen_range(min_range..=max_range)
+        rand::thread_rng().gen_range(settings.min_range..=settings.max_range)
     }; //Génère un nombre réel entier se trouvant entre "min_range et max_range".
 
     //Boucle contenant le jeu.
-    for tries in min_range - 1..max_tries {
+    for tries in settings.min_range - 1..settings.max_tries {
 
         //Affiche les indices si selectionné dans les options.
-        msg = match guess_hint {
+        match settings.guess_hint {
             //Concatène l'indice dans la var "msg". 
             true => {
-                msg = format!("The number is between {} and {}.", small_guess, large_guess);
-                msg
+                settings.msg = format!("The number is between {} and {}.", small_guess, large_guess)
             },
             //S'assure que la var "msg" soit vide.
             false => {
-                msg = "".to_string();
-                msg
+                settings.msg = "".to_string()
             },
         };
 
         //Définit la var "guess" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
-        guess = numeric_input(msg);
+        guess = numeric_input(settings.msg);
     
         //Control si la var "guess" est plus grande, plus petite ou equivalente à la var "secret_number".
         match guess.cmp(&secret_number) {
@@ -47,7 +46,7 @@ pub fn game(settings: (u32, u32, u32, bool)) -> String {
                 println!(
                     "{} is too small! {} {} left", 
                     guess, 
-                    max_tries - tries - 1, 
+                    settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Afiche que le numéro deviné est trop petit.
 
@@ -61,7 +60,7 @@ pub fn game(settings: (u32, u32, u32, bool)) -> String {
                 println!(
                     "{} is too big! {} {} left", 
                     guess, 
-                    max_tries - tries - 1, 
+                    settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Affiche que le numéro deviné est trop grand.
 

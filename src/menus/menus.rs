@@ -1,13 +1,16 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
-use crate::game::game_logic::{
-    cls_scr::cls_title,
-    questions::{
-        yes_no_else_input,
-        numeric_input,
-    }
+use crate::{
+    game::game_logic::{
+        cls_scr::cls_title,
+        questions::{
+            yes_no_else_input,
+            numeric_input,
+        }
+    },
+    Settings,
 };
 
-pub fn main_menu(first_cycle: bool, msg: &String) -> u8 {
+pub fn main_menu(settings: Settings) -> u8 {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut input = String::new();
@@ -19,12 +22,12 @@ pub fn main_menu(first_cycle: bool, msg: &String) -> u8 {
             //Affiche un message spécifique dépendant de si le joueur joue sa première partie de la session.
             format!(
                 "1 -> Play{}!\n2 -> Options\n0 -> Quit{}", 
-                if first_cycle == true {""} else {" again"}, 
-                if msg == "" {"".to_string()} else {format!("\n{}", msg)}
+                if settings.first_cycle == true {""} else {" again"}, 
+                if settings.msg == "" {"".to_string()} else {format!("\n{}", settings.msg)}
             )
         };
 
-        input = yes_no_else_input(msg, input, wrong);
+        input = yes_no_else_input(settings.msg, input, wrong);
 
         //Laisse l'utilisateur choisir s'il veux jouer.
         match input.as_str() {
@@ -32,7 +35,7 @@ pub fn main_menu(first_cycle: bool, msg: &String) -> u8 {
             "n" | "N" | "q" | "Q" | "0" => {
                 cls_title();
                 //Affiche un message dépandant de si le joueur à joué au minimum une partie avant de quiter le jeu.
-                    if first_cycle != true {
+                    if settings.first_cycle != true {
                     println!("Thanks for playing!");
                 } else {
                     println!("Hope you'll play soon!")
@@ -52,33 +55,31 @@ pub fn main_menu(first_cycle: bool, msg: &String) -> u8 {
             //Atrappe tout les autres inputs et indique qu'ils sont incorrect.
             _ => {
                 cls_title();
-                if wrong != true {wrong = true};
+                wrong = true
             },
-        };
+        }
     };
 }
 
 //Menu d'options de jeu.
-pub fn options_menu(settings:(u32, u32, u32, bool)) -> u32 {
+pub fn options_menu(mut settings: Settings) -> u32 {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let (option_size_max, option_size_min, option_tries, option_hint) = settings;
-    let mut msg;
     let mut input;
 
     loop {
         //Concatène le menu des option.
-        msg = format!(
+        settings.msg = format!(
             "Options:\n{}{}{}{}\n{}{}\n{}{}\n{}",
-            "1 -> Size of search.\tMin: ", option_size_min, "\tMax: ", option_size_max,
-            "2 -> Number of tries.\t: ", option_tries,
-            "3 -> Game hints.\t: ", option_hint,
+            "1 -> Size of search.\tMin: ", settings.min_range, "\tMax: ", settings.max_range,
+            "2 -> Number of tries.\t: ", settings.max_tries,
+            "3 -> Game hints.\t: ", settings.guess_hint,
             "0 -> Back to main menu."
         ).trim().to_string();
 
         cls_title();
         //Permet de choisir quelle option le joueur aimerait changer.
-        input = numeric_input(msg);
+        input = numeric_input(settings.msg);
         //
         match input {
             //Retourne au menu d'acueil.
