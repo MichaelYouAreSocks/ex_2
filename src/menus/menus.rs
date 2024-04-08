@@ -10,7 +10,7 @@ use crate::{
     Settings,
 };
 
-pub fn main_menu(settings: Settings) -> u8 {
+pub fn main_menu(mut settings: Settings) -> u8 {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut input = String::new();
@@ -18,16 +18,19 @@ pub fn main_menu(settings: Settings) -> u8 {
 
     loop {
         //Affiche un message différant dépendant de si le joueur joue plus d'une fois.
-        let msg = {
+        settings.msg = {
             //Affiche un message spécifique dépendant de si le joueur joue sa première partie de la session.
             format!(
                 "1 -> Play{}!\n2 -> Options\n0 -> Quit{}", 
                 if settings.first_cycle == true {""} else {" again"}, 
-                if settings.msg == "" {"".to_string()} else {format!("\n{}", settings.msg)}
+                match settings.msg.as_str() {
+                    "" => "".to_string(),
+                    _ => format!("\n{}", settings.msg)
+                }
             )
         };
 
-        input = yes_no_else_input(settings.msg, input, wrong);
+        input = yes_no_else_input(&settings.msg, input, wrong);
 
         //Laisse l'utilisateur choisir s'il veux jouer.
         match input.as_str() {
@@ -79,7 +82,7 @@ pub fn options_menu(mut settings: Settings) -> u32 {
 
         cls_title();
         //Permet de choisir quelle option le joueur aimerait changer.
-        input = numeric_input(settings.msg);
+        input = numeric_input(&settings.msg);
         //
         match input {
             //Retourne au menu d'acueil.

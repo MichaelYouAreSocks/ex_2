@@ -9,21 +9,16 @@ use crate::{
     },
     Settings,
 };
-use std::{
-    fmt::Display,
-    fs::{
+use std::fs::{
         read_to_string,
         write,
         OpenOptions,
-    },
-    u32,
-};
+    };
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
 pub fn default_settings() -> Settings {
 
     //Initialisation des vars, constantes et plages si applicable.
-
     let mut settings: Settings = Settings {
         max_range: 100,
         min_range: 1,
@@ -38,13 +33,6 @@ pub fn default_settings() -> Settings {
         err_name: String::new(),
         err_msg: String::new(),
     };
-    let mut settings_raw: String;
-    let mut loop_count;
-    
-    //let err_name: str;
-
-    //let err_msg: str;
-
 
     settings.msg = format!(
         "//This file contains the settings for the Number Guessing Game.\n\n{}\n\n{}\n\n{}\n\n{}",
@@ -81,83 +69,61 @@ pub fn default_settings() -> Settings {
             //Concatène le message d'erreur de la lecture d'un fichier d'options déja présent.
             (settings.err_name,settings.err_msg) = { 
                 match loop_count {
-                    1 => ("max_range","a number from 1 to 4'294'967'295"),
-                    2 => ("min_range","a number from 0 to 4'294'967'294"),
-                    3 => ("max_tries","a number from 1 to 4'294'967'295"),
-                    4 => ("guess_hint","'true' or 'false'"),
+                    1 => ("max_range".to_string(),"a number from 1 to 4'294'967'295".to_string()),
+                    2 => ("min_range".to_string(),"a number from 0 to 4'294'967'294".to_string()),
+                    3 => ("max_tries".to_string(),"a number from 1 to 4'294'967'295".to_string()),
+                    4 => ("guess_hint".to_string(),"'true' or 'false'".to_string()),
+                    _ => ("".to_string(),"".to_string())
                 }
             };
 
-            settings.guess_hint = if settings_raw
+            if let Ok(guess_hint) = settings_raw
             .next_back()
             .unwrap()
-            .parse::<bool>()
-            .expect(
-                format!(
-                    "'{}' should be {}.",settings.err_name,settings.err_msg
-                )
-                .as_str()
-            ) else {
-
+            .parse::<bool>() {
+                settings.guess_hint = guess_hint;
+            } else {
+                settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,read_err_msg);
+                settings.stop = true;     
+                return settings           
             };
+
             for _ in 1..=2 {settings_raw.next_back();};
-
-            let settings = settings_raw.next().unwrap();
-
-            if let Ok(settings) = settings_raw
-            .to_string()
-            .parse::<u32>()
-            .expect(
-                format!(
-                    "'{}' should be {}.",
-                    err_name,
-                    err_msg,
-                )
-                .as_str()
-            );
-            let Err(settings) = settings
-            .parse()
-            .expect(
-                format!(
-                    "'{}' should be {}.",
-                    err_name,
-                    err_msg,
-                )
-                .as_str()
-            );
         };
 
     } else {
 
         //Écrit le contenu de la var "msg" dans le fichier "Settings.txt" 
         //et affiche le contenu de la var "write_err_msg" si une erreur est encontré.
-        if let Ok(settings_raw) = OpenOptions::new()
+        if let Ok(_) = OpenOptions::new()
         .write(true)
         .create(true)
         .open("Settings.txt") {
-            write("Settings.txt", settings.msg)
+            write("Settings.txt", &settings.msg)
             .expect("Settings.txt");
         } else {
-            println!("{}",read_err_msg);
-            };
+            settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,write_err_msg);
+            settings.stop = true;
+            return settings
+        };
 
     };
 
-    return (max_range, min_range, max_tries, guess_hint);
+    return settings;
 }
 
 //Demande la taille de la plage numérique à chercher souhaité.
 pub fn game_size(mut settings: Settings) -> Settings {
-    settings.max_range = format!("Input the largest number you want.\nCurrent:\t{}",settings.max_range);
-    settings.max_range = numeric_input(settings.msg);
+    settings.msg = format!("Input the largest number you want.\nCurrent:\t{}",&settings.max_range);
+    settings.max_range = numeric_input(&settings.msg);
     cls_title();
-    settings
+    return settings
 }
 
 //Demande le nombre de tentatives que le joueur aimerait avoir.
 pub fn game_tries(mut settings: Settings) -> Settings {
-    settings.max_tries = numeric_input(settings.msg);
     settings.msg = format!("How many attempts do you want?\nCurrent:\t{}",settings.max_tries);
+    settings.max_tries = numeric_input(&settings.msg);
     cls_title();
     settings
 }
@@ -173,7 +139,7 @@ pub fn game_hint(mut settings: Settings) -> Settings {
         settings.msg = format!("Do you want to get hints while playing? (Y/N)\nCurrent:\t{}",settings.guess_hint);
         
         //Affiche la var "option_hint" et demande si le joueur veux la changer.
-        input = yes_no_else_input(settings.msg, input, wrong);
+        input = yes_no_else_input(&settings.msg, input, wrong);
             
         match input.as_str() {
             //Retourne à la liste des options et indique que le joueur ne veux pas d'indices.

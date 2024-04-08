@@ -10,7 +10,7 @@ use crate::{
 use rand::Rng;
 
 //Fonction de jeu.
-pub fn game(mut settings: Settings) -> String {
+pub fn game(mut settings: Settings) -> Settings {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut guess; //Déclare la var "guess".
@@ -36,7 +36,7 @@ pub fn game(mut settings: Settings) -> String {
         };
 
         //Définit la var "guess" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
-        guess = numeric_input(settings.msg);
+        guess = numeric_input(&settings.msg);
     
         //Control si la var "guess" est plus grande, plus petite ou equivalente à la var "secret_number".
         match guess.cmp(&secret_number) {
@@ -71,16 +71,18 @@ pub fn game(mut settings: Settings) -> String {
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
             Ordering::Equal => {
                 cls_title();
-                return format!(
+                settings.msg = format!(
                     "You win! The correct number was: '{}'",
                     secret_number
-                ); //Indique que le jeu n'a pas rencontré d'erreur.
+                );//Indique que le jeu n'a pas rencontré d'erreur.
+                return settings
             }
         };
     };
     cls_title();
-    return format!(
+    settings.msg = format!(
         "You loose! The secret number was {}",
         secret_number
-    ); //Indique au joueur qu'il a perdu et quel était le numéro cherché.
+    );//Indique au joueur qu'il a perdu et quel était le numéro cherché.
+    settings
 }
