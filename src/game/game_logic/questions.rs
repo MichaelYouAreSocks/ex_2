@@ -3,7 +3,7 @@ use crate::game::game_logic::cls_scr::cls_title;
 use std::io;
 
 //Transforme une valeur alpha-numérique en numérique sans négatif.
-pub fn numeric_input(msg: String,) -> u32 {
+pub fn numeric_input(msg: &String,) -> u32 {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut input = String::new(); //Compare ce que le joueur input avec ce qu'attends le jeu.
@@ -43,7 +43,7 @@ pub fn numeric_input(msg: String,) -> u32 {
 }
 
 //Permet d'avoir une multitude de choix de réponces à une question.
-pub fn yes_no_else_input(msg: String, mut input:String, wrong: bool) -> String {
+pub fn yes_no_else_input(msg: &String, mut input:String, wrong: bool) -> String {
     //Affiche le context de la question.
     match wrong {
         false => {

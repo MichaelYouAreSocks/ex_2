@@ -19,6 +19,8 @@ fn main() {
     cls_title(); 
     
     //Boucle contenant le program.
-    while settings.stop { settings = main_menu_logic(settings) };
+    while settings.stop {settings = main_menu_logic(settings)};
+
+    println!(settings.err_msg)
 }
 
