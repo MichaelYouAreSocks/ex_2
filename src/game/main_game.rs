@@ -13,10 +13,10 @@ use rand::Rng;
 pub fn game(mut settings: Settings) -> Settings {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let mut guess; //Déclare la var "guess".
-    let mut small_guess = settings.min_range - 1; //Indice min initial.
-    let mut large_guess = settings.max_range + 1; //Indice max initial.
-    let secret_number = {
+    let mut user_in: u32; //
+    let mut small_guess: u32 = settings.min_range - 1; //Indice min initial.
+    let mut large_guess: u32 = settings.max_range + 1; //Indice max initial.
+    let secret_number: u32 = {
         rand::thread_rng().gen_range(settings.min_range..=settings.max_range)
     }; //Génère un nombre réel entier se trouvant entre "min_range et max_range".
 
@@ -36,22 +36,23 @@ pub fn game(mut settings: Settings) -> Settings {
         };
 
         //Définit la var "guess" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
-        guess = numeric_input(&settings.msg);
+        settings = numeric_input(settings);
+        user_in = settings.user_in.parse::<u32>().unwrap();
     
         //Control si la var "guess" est plus grande, plus petite ou equivalente à la var "secret_number".
-        match guess.cmp(&secret_number) {
+        match user_in.cmp(&secret_number) {
             //Affiche un message indiquant que le dernier numéro deviné est plus petit que celui cherché.
             Ordering::Less => {
                 cls_title();
                 println!(
                     "{} is too small! {} {} left", 
-                    guess, 
+                    settings.user_in, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Afiche que le numéro deviné est trop petit.
 
-                if small_guess < guess {
-                    small_guess = guess
+                if small_guess < user_in {
+                    small_guess = user_in
                 }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le dernier numéro deviné est plus grand que celui cherché.
@@ -59,13 +60,13 @@ pub fn game(mut settings: Settings) -> Settings {
                 cls_title();
                 println!(
                     "{} is too big! {} {} left", 
-                    guess, 
+                    settings.user_in, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Affiche que le numéro deviné est trop grand.
 
-                if large_guess > guess {
-                    large_guess = guess
+                if large_guess > user_in {
+                    large_guess = user_in
                 }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.

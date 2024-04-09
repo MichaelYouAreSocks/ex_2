@@ -17,15 +17,17 @@ use crate::{
 };
 
 pub fn main_menu_logic(mut settings: Settings) -> Settings {
-
+    settings = main_menu(settings);
     //Quite le progam si le joueur veut plus jouer.
-    match main_menu(settings) {
+    match settings.user_in 
+    .parse::<u32>()
+    .unwrap() {
         //Quite le jeu.
         0 => settings.stop = true,
         //Joue au jeu.
         1 => {
             //Control si la fonction "game" rencontre une erreur et importe toutes les options de ce dernier.
-            game(settings);
+            settings = game(settings);
             //Controle si c'est la première partie du joueur et indique que ce n'est plus la première si c'est le cas.
             settings.first_cycle = match settings.msg.as_str() {
                 "" => {true},
@@ -40,11 +42,12 @@ pub fn main_menu_logic(mut settings: Settings) -> Settings {
     settings
 }
 
-pub fn options_menu_logic(mut settings: Settings) -> Settings {
+fn options_menu_logic(mut settings: Settings) -> Settings {
     
     loop {
+        settings = options_menu(settings);
         //Affiche le menu des options avec leur configuration actuel.
-        match options_menu(settings) {
+        match settings.user_in.parse::<u8>().unwrap() {
             //Retourne au menu d'acueil.
             0 => {
                 cls_title();

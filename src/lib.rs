@@ -11,6 +11,7 @@ pub struct Settings {
     pub stop: bool, //Permet de quiter le jeu.
 
     pub msg: String, //Concatène les messages pour l'utilisateur.
+    pub user_in: String, //Concatène les inputs de l'utilisateur.
     pub err_name: String, //Concatène les noms d'erreur.
     pub err_msg: String, //Concatène les messages d'erreur.
 }
