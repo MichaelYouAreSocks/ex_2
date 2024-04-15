@@ -11,9 +11,7 @@ use crate::{
 };
 use std::{
     fs::{
-        write,
-        OpenOptions,
-        File,
+        read_to_string, write, File, OpenOptions
     }, 
     io::Read,
 };
@@ -22,6 +20,9 @@ use std::{
 pub fn default_settings() -> Settings {
 
     //Initialisation des vars, constantes et plages si applicable.
+
+    let mut settings_raw;
+
     let mut settings: Settings = Settings {
         max_range: u32::max_value(),
         min_range: 1,
@@ -38,16 +39,20 @@ pub fn default_settings() -> Settings {
         err_msg: String::new(),
     };
 
-    let read_err_msg: String = format!(
-        "Settings file could not be read.\n{}\n{}",
-        "If the file is being automatically removed by your anti-virus,",
-        "please add an exception to it for this game to work."
-    );
+    let read_err_msg: (String,String) = (
+        format!("Reading"),
+        format!(
+            "Settings file could not be read.\n{}\n{}",
+            "If the file is being automatically removed by your anti-virus,",
+            "please add an exception to it for this game to work."
+    ));
 
-    let write_err_msg: String = format!(
-        "Settings file already exists or couldn't be created.\n{}",
-        "If the game isn't in a writable directory, please move it."
-    );
+    let write_err_msg: (String,String) = (
+        format!("Writing"),
+        format!(
+            "Settings file already exists or couldn't be created.\n{}",
+            "If the game isn't in a writable directory, please move it."
+    ));
 
     settings.msg = format!(
         "//This file contains the settings for the Number Guessing Game.\n\n{}\n\n{}\n\n{}\n\n{}",
@@ -66,10 +71,8 @@ pub fn default_settings() -> Settings {
 
         write("Settings.txt",settings.msg);
         //
-        settings_raw.read_to_string(&mut {
-            let settings_raw;
-            settings_raw
-        });
+        let Ok(settings_raw) =read_to_string(&mut settings_raw);
+        Err(println!("{}{}",write_err_msg.0,write_err_msg.1));
         settings_raw = settings_raw.lines();
 
         //
