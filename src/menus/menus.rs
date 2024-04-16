@@ -82,7 +82,10 @@ pub fn options_menu(mut settings: Settings) -> Settings {
         settings = numeric_input(settings); //Permet de choisir quelle option le joueur aimerait changer.
 
         //
-        match settings.user_in.parse::<u8>().unwrap() {
+        match settings.user_in
+        .trim()
+        .parse::<u8>()
+        .expect(format!("{}",settings.user_in).as_str()) {
             //Retourne au menu d'acueil.
             0 => return settings,
             //Option de la taille de la plage à chercher chaque manche.

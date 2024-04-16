@@ -9,11 +9,10 @@ use crate::{
     },
     Settings,
 };
-use std::{
-    fs::{
-        read_to_string, write, File, OpenOptions
-    }, 
-    io::Read,
+use std::fs::{
+    read_to_string, 
+    write, 
+    OpenOptions,
 };
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
@@ -21,7 +20,8 @@ pub fn default_settings() -> Settings {
 
     //Initialisation des vars, constantes et plages si applicable.
 
-    let mut settings_raw;
+    
+    let mut tmp: (&str,&str);
 
     let mut settings: Settings = Settings {
         max_range: u32::max_value(),
@@ -33,53 +33,73 @@ pub fn default_settings() -> Settings {
         stop: false,
         first_cycle: true,
         
-        msg: String::new(),
         user_in: String::new(),
         err_name: String::new(),
         err_msg: String::new(),
+        msg: String::from(
+            format!(
+            "//This file contains the settings for the Number Guessing Game.\n\n{}\n\n{}\n\n{}\n\n{}",
+    
+            "//Up to what number do you want to guess?\n100",
+            
+            "//From what number do you want to guess?\n1",
+            
+            "//How many atempts do you want to guess the random number?\n10",
+            
+            "//Do you want hints in your game?\ntrue"
+            )
+        )
     };
 
-    let read_err_msg: (String,String) = (
-        format!("Reading"),
+    struct ErrFormat {
+        name: String,
+        msg: String,
+    }
+    let mut read_err: ErrFormat = ErrFormat { name: String::new(), msg: String::new() };
+    let mut write_err: ErrFormat = ErrFormat { name: String::new(), msg: String::new() };
+    
+    (read_err.name,read_err.msg) = (
+        format!("Reading File"),
         format!(
             "Settings file could not be read.\n{}\n{}",
             "If the file is being automatically removed by your anti-virus,",
             "please add an exception to it for this game to work."
     ));
 
-    let write_err_msg: (String,String) = (
-        format!("Writing"),
+    (write_err.name,write_err.msg) = (
+        format!("Writing File"),
         format!(
             "Settings file already exists or couldn't be created.\n{}",
             "If the game isn't in a writable directory, please move it."
     ));
-
-    settings.msg = format!(
-        "//This file contains the settings for the Number Guessing Game.\n\n{}\n\n{}\n\n{}\n\n{}",
-
-        "//Up to what number do you want to guess?\n100",
-        
-        "//From what number do you want to guess?\n1",
-        
-        "//How many atempts do you want to guess the random number?\n10",
-        
-        "//Do you want hints in your game?\ntrue"
-    );
     
     //Écrit le contenu de la var "msg" dans le fichier "Settings.txt"
-    if let Ok(settings_raw) = OpenOptions::new().read(true).write(true).create(true).open("Settings.txt") {
-
-        write("Settings.txt",settings.msg);
+    if let Ok(_) = OpenOptions::new().read(true).write(true).create(true).open("Settings.txt") {
         //
-        let Ok(settings_raw) =read_to_string(&mut settings_raw);
-        Err(println!("{}{}",write_err_msg.0,write_err_msg.1));
-        settings_raw = settings_raw.lines();
+        settings.err_name = format!("{}",write_err.name);
+        settings.err_msg = format!("{}",write_err.msg);
+        //
+        if let Err(_) = write("Settings.txt",&settings.msg) {
+
+        };
+
+        //
+        let settings_raw = match read_to_string("Settings.txt") {
+            Ok(settings_raw) => settings_raw, //
+            Err(_) => {
+                settings.err_msg = String::from(format!("{}{}",write_err.name,write_err.msg)); 
+                format!("")
+            }, //
+        };
+
+        //
+        let mut settings_raw = settings_raw.lines();
 
         //
         for loop_count in settings.settings_count..=1 {
             
-            //Concatène le message d'erreur de la lecture d'un fichier d'options déja présent.
-            (settings.err_name.as_str(),settings.err_msg.as_str()) = { 
+            //Concatène le message d'erreur de la lecture d'un fichier d'options erroné.
+            tmp = { 
                 match loop_count {
                     1 => ("max_range","a number from 1 to 4'294'967'295"),
                     2 => ("min_range","a number from 0 to 4'294'967'294"),
@@ -89,13 +109,15 @@ pub fn default_settings() -> Settings {
                 }
             };
 
+            (settings.err_name,settings.err_msg) = (tmp.0.to_string(),tmp.1.to_string());
+
             if let Ok(guess_hint) = settings_raw
             .next_back()
             .unwrap()
             .parse::<bool>() {
                 settings.guess_hint = guess_hint;
             } else {
-                settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,read_err_msg);
+                settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,read_err.msg);
                 settings.stop = true;     
                 return settings           
             };
@@ -108,7 +130,7 @@ pub fn default_settings() -> Settings {
         //Écrit le contenu de la var "msg" dans le fichier "Settings.txt" 
         //et affiche le contenu de la var "write_err_msg" si une erreur est encontré.
         println!("Error reading settings.");
-        settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,write_err_msg);
+        settings.err_msg = format!("'{}' should be {}.\n{}",settings.err_name,settings.err_msg,write_err.msg);
         settings.stop = true;
         return settings
     };
