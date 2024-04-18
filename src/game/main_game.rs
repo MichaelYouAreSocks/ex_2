@@ -5,12 +5,17 @@ use crate::{
         cls_scr::cls_title,
         questions::numeric_input,
     },
-    Settings,
+    RuntimeFunctionBlob,
 };
 use rand::Rng;
 
 //Fonction de jeu.
-pub fn game(mut settings: Settings) -> Settings {
+pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+    let RuntimeFunctionBlob {
+        mut settings, 
+        mut core_functions, 
+        mut comunication,
+    } = runtime_blob;
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut user_in: u32; //
@@ -27,17 +32,17 @@ pub fn game(mut settings: Settings) -> Settings {
         match settings.guess_hint {
             //Concatène l'indice dans la var "msg". 
             true => {
-                settings.msg = format!("The number is between {} and {}.", small_guess, large_guess)
+                comunication.msg = format!("The number is between {} and {}.", small_guess, large_guess)
             },
             //S'assure que la var "msg" soit vide.
             false => {
-                settings.msg = "".to_string()
+                comunication.msg = "".to_string()
             },
         };
 
         //Définit la var "guess" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
-        settings = numeric_input(settings);
-        user_in = settings.user_in.parse::<u32>().unwrap();
+        comunication = numeric_input(comunication);
+        comunication.user_in = comunication.user_in.parse::<>().unwrap();
     
         //Control si la var "guess" est plus grande, plus petite ou equivalente à la var "secret_number".
         match user_in.cmp(&secret_number) {
@@ -46,7 +51,7 @@ pub fn game(mut settings: Settings) -> Settings {
                 cls_title();
                 println!(
                     "{} is too small! {} {} left", 
-                    settings.user_in, 
+                    comunication.user_in, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Afiche que le numéro deviné est trop petit.
@@ -60,7 +65,7 @@ pub fn game(mut settings: Settings) -> Settings {
                 cls_title();
                 println!(
                     "{} is too big! {} {} left", 
-                    settings.user_in, 
+                    comunication.user_in, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Affiche que le numéro deviné est trop grand.
@@ -72,18 +77,20 @@ pub fn game(mut settings: Settings) -> Settings {
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
             Ordering::Equal => {
                 cls_title();
-                settings.msg = format!(
+                comunication.msg = format!(
                     "You win! The correct number was: '{}'",
                     secret_number
                 );//Indique que le jeu n'a pas rencontré d'erreur.
-                return settings
+                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
+                return runtime_blob;
             }
         };
     };
     cls_title();
-    settings.msg = format!(
+    comunication.msg = format!(
         "You loose! The secret number was {}",
         secret_number
     );//Indique au joueur qu'il a perdu et quel était le numéro cherché.
-    settings
+    runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
+    runtime_blob
 }

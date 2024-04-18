@@ -1,6 +1,5 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
-    Settings,
     game::{
         game_logic::cls_scr::cls_title, 
         main_game::game, 
@@ -14,40 +13,53 @@ use crate::{
         main_menu, 
         options_menu,
     },
+    RuntimeFunctionBlob,
 };
 
-pub fn main_menu_logic(mut settings: Settings) -> Settings {
-    settings = main_menu(settings);
+pub fn main_menu_logic(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+    let RuntimeFunctionBlob {
+        mut settings, 
+        mut core_functions, 
+        mut comunication,
+    } = runtime_blob;
+    
+    runtime_blob = main_menu(runtime_blob);
     //Quite le progam si le joueur veut plus jouer.
-    match settings.user_in 
+    match comunication.user_in 
     .parse::<u32>()
     .unwrap() {
         //Quite le jeu.
-        0 => settings.stop = true,
+        0 => core_functions.stop = true,
         //Joue au jeu.
         1 => {
             //Control si la fonction "game" rencontre une erreur et importe toutes les options de ce dernier.
-            settings = game(settings);
+            runtime_blob = game(runtime_blob);
             //Controle si c'est la première partie du joueur et indique que ce n'est plus la première si c'est le cas.
-            settings.first_cycle = match settings.msg.as_str() {
+            core_functions.first_cycle = match comunication.msg.as_str() {
                 "" => {true},
                 _  => {false},
             };
         },
         //Options du jeu.
-        2 => settings = options_menu_logic(settings),
+        2 => runtime_blob = options_menu_logic(runtime_blob),
         //Atrappe touts les autres inputs et indique qu'ils sont incorrect.
-        _ => settings.stop = false,
+        _ => core_functions.stop = false,
     };
-    settings
+    runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
+    runtime_blob
 }
 
-fn options_menu_logic(mut settings: Settings) -> Settings {
-    
+fn options_menu_logic(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+    let RuntimeFunctionBlob {
+        mut settings, 
+        mut core_functions, 
+        mut comunication,
+    } = runtime_blob;
+
     loop {
-        settings = options_menu(settings);
+        runtime_blob = options_menu(runtime_blob);
         //Affiche le menu des options avec leur configuration actuel.
-        match settings.user_in.parse::<u8>().unwrap() {
+        match comunication.user_in.parse::<u8>().unwrap() {
             //Retourne au menu d'acueil.
             0 => {
                 cls_title();
@@ -56,17 +68,17 @@ fn options_menu_logic(mut settings: Settings) -> Settings {
             //Option de la taille de la plage à chercher chaque manche.
             1 => {
                 cls_title();
-                settings = game_size(settings)
+                runtime_blob = game_size(runtime_blob)
             },
             //Option du nombre de tentatives par manches.
             2 => {
                 cls_title();
-                settings = game_tries(settings)
+                runtime_blob = game_tries(runtime_blob)
             },
             //Option d'indice.
             3 => {
                 cls_title();
-                settings = game_hint(settings)
+                runtime_blob = game_hint(runtime_blob)
             }
             //Atrappe touts les autres inputs et indique qu'ils sont incorrect.
             _ => {
@@ -75,5 +87,5 @@ fn options_menu_logic(mut settings: Settings) -> Settings {
             },
         };
     };
-    settings
+    runtime_blob
 }
