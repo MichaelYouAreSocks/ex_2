@@ -1,5 +1,8 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
-use crate::{game::game_logic::cls_scr::cls_title,Comunication};
+use crate::{
+    utilities::cls_scr::cls_title,
+    Comunication
+};
 use std::io;
 
 //Transforme une valeur alpha-numérique en numérique sans négatif.
@@ -22,9 +25,9 @@ pub fn numeric_input(mut comunication: Comunication) -> Comunication {
                 println!(
                     "{}\n'{}' isn't a valid input. Please try again.", 
                     comunication.msg, 
-                    comunication.user_in.trim()
+                    comunication.user_in_alpha.trim()
                 );
-                comunication.user_in = String::new(); //Vide le contenu de la var "input"
+                comunication.user_in_alpha = String::new(); //Vide le contenu de la var "input"
                 wrong = false;
                 wrong
             },
@@ -32,16 +35,15 @@ pub fn numeric_input(mut comunication: Comunication) -> Comunication {
 
         //Permet à l'utilisateur d'indiquer une valeur au program.
         io::stdin()
-            .read_line(&mut comunication.user_in)
+            .read_line(&mut comunication.user_in_alpha)
             .expect("Failed to read line");
 
         //Transformation d'une var alpha-num. en numérique sans négatif si c'est possible.
-        if let Ok(user_in) = comunication.user_in.trim().parse() {
-            comunication.user_in = user_in;
+        if let Ok(user_in) = comunication.user_in_alpha.trim().parse::<u32>() {
+            comunication.user_in_u32 = user_in;
             return comunication
         } else {
-            wrong = true;
-            wrong
+            wrong = true
         };
     };
 }
@@ -53,17 +55,17 @@ pub fn yes_no_else_input(mut comunication: Comunication,wrong: bool) -> Comunica
         false => println!("{}", comunication.msg),
         true => { //Affiche que la var "input" n'était pas correct en plus du context de la question.
             cls_title();
-            println!("{}\n'{}' isn't a valid input. Please try again.", comunication.msg, comunication.user_in);
-            comunication.user_in = String::new() //Purge la var "input".
+            println!("{}\n'{}' isn't a valid input. Please try again.", comunication.msg, comunication.user_in_alpha);
+            comunication.user_in_alpha = String::new() //Purge la var "input".
         },
     };
 
     //Permet à l'utilisateur d'indiquer une valeur au program.
     io::stdin()
-        .read_line(&mut comunication.user_in)
+        .read_line(&mut comunication.user_in_alpha)
         .expect("Failed to read line");
 
-        comunication.user_in = comunication.user_in.trim().to_string();
+        comunication.user_in_alpha = comunication.user_in_alpha.trim().to_string();
 
     return comunication
 }

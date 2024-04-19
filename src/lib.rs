@@ -1,5 +1,7 @@
 pub mod game;
 pub mod menus;
+pub mod utilities;
+
 pub struct Settings {
     pub max_range: u32, // le plus grand numéro de la plâge à chercher.
     pub min_range: u32, //Le plus petit numéro de la plâge à chercher.
@@ -13,17 +15,18 @@ pub struct CoreFunctions {
 }
 pub struct Comunication {
     pub msg: String, //Concatène les messages pour l'utilisateur.
-    pub user_in: String, //Concatène les inputs de l'utilisateur.
+    pub user_in_alpha: String, //Concatène les inputs de l'utilisateur.
+    pub user_in_u32: u32, // 
     pub err_name: String, //Concatène les noms d'erreur.
     pub err_msg: String, //Concatène les messages d'erreur.
 }
 pub struct ErrFormat {
-    name: String,
-    msg: String,
+    pub name: Box<str>,
+    pub msg: Box<str>,
 }
 // Concatène les "stucts" pour faciliter l'échange d'information entre les différentes fonctions. 
 pub struct RuntimeFunctionBlob {
-    settings: Settings, //
-    core_functions: CoreFunctions, //
-    comunication: Comunication, //
+    pub settings: Settings, //
+    pub core_functions: CoreFunctions, //
+    pub comunication: Comunication, //
 }

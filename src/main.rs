@@ -1,11 +1,11 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use devinette_numeros::{
-    game::{
-        game_logic::cls_scr::cls_title,
-        options::default_settings,
+    utilities::{
+        cls_scr::cls_title,
+        default_game_settings::default_settings,
     }, 
     menus::menu_logic::main_menu_logic,
-    RuntimeFunctionBlob
+    RuntimeFunctionBlob,
 };
 
 //Logiciel mère.
@@ -15,7 +15,7 @@ fn main() {
     let mut runtime_blob: RuntimeFunctionBlob = default_settings();
     
     //Boucle contenant le program.
-    while !core_functions.stop {
+    while !runtime_blob.core_functions.stop {
 
         //
         runtime_blob = main_menu_logic(runtime_blob);
@@ -24,6 +24,6 @@ fn main() {
         cls_title(); 
     };
 
-    if comunication.err_msg != "" {println!("{}",comunication.err_msg)}
+    if runtime_blob.comunication.err_msg != "" {println!("{}",runtime_blob.comunication.err_msg)}
 }
 

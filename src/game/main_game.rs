@@ -1,7 +1,7 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use std::cmp::Ordering;
 use crate::{
-    game::game_logic::{
+    utilities::{
         cls_scr::cls_title,
         questions::numeric_input,
     },
@@ -12,13 +12,12 @@ use rand::Rng;
 //Fonction de jeu.
 pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
     let RuntimeFunctionBlob {
-        mut settings, 
+        settings, 
         mut core_functions, 
         mut comunication,
     } = runtime_blob;
 
     //Initialisation des vars, constantes et plages si applicable.
-    let mut user_in: u32; //
     let mut small_guess: u32 = settings.min_range - 1; //Indice min initial.
     let mut large_guess: u32 = settings.max_range + 1; //Indice max initial.
     let secret_number: u32 = {
@@ -40,24 +39,23 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             },
         };
 
-        //Définit la var "guess" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
+        //Définit la var "comunication.user_in" en tant qu'alpha-numérique de la valeur indiqué par la fonction "numeric_input".
         comunication = numeric_input(comunication);
-        comunication.user_in = comunication.user_in.parse::<>().unwrap();
     
-        //Control si la var "guess" est plus grande, plus petite ou equivalente à la var "secret_number".
-        match user_in.cmp(&secret_number) {
+        //Control si la var "comunication.user_in_32" est plus grande, plus petite ou equivalente à la var "secret_number".
+        match comunication.user_in_u32.cmp(&secret_number) {
             //Affiche un message indiquant que le dernier numéro deviné est plus petit que celui cherché.
             Ordering::Less => {
                 cls_title();
                 println!(
                     "{} is too small! {} {} left", 
-                    comunication.user_in, 
+                    comunication.user_in_u32, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Afiche que le numéro deviné est trop petit.
 
-                if small_guess < user_in {
-                    small_guess = user_in
+                if small_guess < comunication.user_in_u32 {
+                    small_guess = comunication.user_in_u32
                 }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le dernier numéro deviné est plus grand que celui cherché.
@@ -65,13 +63,13 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 cls_title();
                 println!(
                     "{} is too big! {} {} left", 
-                    comunication.user_in, 
+                    comunication.user_in_u32, 
                     settings.max_tries - tries - 1, 
                     if tries == 1 {"trie"} else {"tries"}
                 ); //Affiche que le numéro deviné est trop grand.
 
-                if large_guess > user_in {
-                    large_guess = user_in
+                if large_guess > comunication.user_in_u32 {
+                    large_guess = comunication.user_in_u32
                 }; //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
