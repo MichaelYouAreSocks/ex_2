@@ -21,8 +21,8 @@ pub struct Comunication {
     pub err_msg: String, //Concatène les messages d'erreur.
 }
 pub struct ErrFormat {
-    pub name: Box<str>,
-    pub msg: Box<str>,
+    pub name: String,
+    pub msg: String,
 }
 // Concatène les "stucts" pour faciliter l'échange d'information entre les différentes fonctions. 
 pub struct RuntimeFunctionBlob {

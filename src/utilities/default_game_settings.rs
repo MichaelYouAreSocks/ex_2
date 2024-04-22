@@ -12,42 +12,43 @@ use crate::{
 };
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
-pub fn default_settings() -> RuntimeFunctionBlob {
+pub fn default_settings() {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let runtime_blob: RuntimeFunctionBlob;
-    let mut settings: Settings = Settings {
-        max_range: 100,
-        min_range: 1,
-        max_tries: 7,
-        guess_hint: true,
-        settings_count: 4,
-    };
-    let mut core_functions: CoreFunctions = CoreFunctions {
-        stop: false,
-        first_cycle: true,
-    };
-    let mut comunication: Comunication = Comunication {
-        user_in_alpha: String::new(),
-        user_in_u32: 0,
-        err_name: String::new(),
-        err_msg: String::new(),
-        msg: String::from(format!(
-            "-This file contains the settings for the Number Guessing Game.\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}",
-    
-            "-Up to what number do you want to guess?",
-            settings.max_range,
-            
-            "-From what number do you want to guess?",
-            settings.min_range,
-            
-            "-How many atempts do you want to guess the random number?",
-            settings.max_tries,
-            
-            "-Do you want hints while you play?",
-            settings.guess_hint
-        ))
-    };
+    let mut runtime_blob: Box<RuntimeFunctionBlob> = Box::new(RuntimeFunctionBlob {
+        settings: Settings {
+            max_range: 100,
+            min_range: 1,
+            max_tries: 7,
+            guess_hint: true,
+            settings_count: 4,
+        },
+        core_functions: CoreFunctions {
+            stop: false,
+            first_cycle: true,
+        },
+        comunication: Comunication {
+            user_in_alpha: String::new(),
+            user_in_u32: 0,
+            err_name: String::new(),
+            err_msg: String::new(),
+            msg: String::from(format!(
+                "-This file contains the settings for the Number Guessing Game.\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}",
+        
+                "-Up to what number do you want to guess?",
+                100,//&runtime_blob.settings.max_range,
+                
+                "-From what number do you want to guess?",
+                1,//runtime_blob.settings.min_range,
+                
+                "-How many atempts do you want to guess the random number?",
+                7,//runtime_blob.settings.max_tries,
+                
+                "-Do you want hints while you play?",
+                true,//runtime_blob.settings.guess_hint
+            ))
+        },
+    });
     let read_err: ErrFormat = ErrFormat {
         name: "Reading File".into(),
         msg: format!(
@@ -68,14 +69,15 @@ pub fn default_settings() -> RuntimeFunctionBlob {
         msg: String::new().into(),
     };
     let mut tmp_err: (&str,&str);
-    let settings_raw;
+    let mut settings_raw: std::str::Lines;
+    let imported_settings: u8;
     
     //Controle si un fichier "Settings.txt" existe déja et le créé sinon.
     if let Ok(_) = OpenOptions::new().read(true).write(true).create(true).open("Settings.txt") {
         
         //Préparation des messages d'erreurs d'écriture 
-        comunication.err_name = write_err.name.to_string();
-        comunication.err_msg = write_err.msg.to_string();
+        runtime_blob.comunication.err_name = write_err.name.to_string();
+        runtime_blob.comunication.err_msg = write_err.msg.to_string();
 
         //Importe les option de jeu du fichier "Settings.txt"
         settings_raw = match read_to_string("Settings.txt") {
@@ -83,29 +85,19 @@ pub fn default_settings() -> RuntimeFunctionBlob {
                 settings_raw.lines()
             },
             Err(_) => {
-                comunication.err_name = read_err.name.to_string();
-                comunication.err_msg = format!("{}",read_err.msg);
-                core_functions.stop = true;
-                runtime_blob = RuntimeFunctionBlob {
-                    settings,
-                    core_functions,
-                    comunication,
-                };
-                return runtime_blob;
+                runtime_blob.comunication.err_name = read_err.name.to_string();
+                runtime_blob.comunication.err_msg = format!("{}",read_err.msg);
+                runtime_blob.core_functions.stop = true;
+                return;
             },
         };
 
         //
-        for imported_settings in 1..=4 {
-
-            settings_raw.filter(!|-|);
+        while imported_settings < 4 {
             
             //Concatène le message d'erreur de la lecture d'un fichier d'options erroné.
             tmp_err = match imported_settings {
-                1 => {
-                    settings.max_range = settings_raw;
-                    ("Max_range","a number from 1 to 4'294'967'295")
-                },
+                1 => ("Max_range","a number from 1 to 4'294'967'295"),
                 2 => ("Min_range","a number from 0 to 4'294'967'294"),
                 3 => ("Max_tries","a number from 1 to 4'294'967'295"),
                 4 => ("Guess_hint","'true' or 'false'"),
@@ -113,28 +105,40 @@ pub fn default_settings() -> RuntimeFunctionBlob {
             };
             (tmp_err_msg.name,tmp_err_msg.msg) = (tmp_err.0.into(),tmp_err.1.into());
 
+            match settings_raw.next().unwrap().parse::<u32,bool>().expect(format!("{} should be {}.",tmp_err.0,tmp_err.1).as_str()) {
+                 => {
+                    if imported_settings = 1..=3 {};
+                },
+                "true" => {
+                    runtime_blob.settings.guess_hint = true;
+
+                },
+                "false" => {
+                    runtime_blob.settings.guess_hint = false;
+
+                },
+                _ => {},
+            };
+
             //
             
         };
+        runtime_blob.comunication.err_name = write_err.name.to_string();
+        runtime_blob.comunication.err_msg = write_err.msg.to_string();
         
         //
-        if let Err(_) = write("Settings.txt",&comunication.msg) {
-
-        };
+        write("Settings.txt",&runtime_blob.comunication.msg).expect(format!(
+            "Error : {}\n{}\n{}",
+            &runtime_blob.comunication.err_name,
+            "Probable cause : ",
+            &runtime_blob.comunication.err_msg,
+        ).as_str());
 
     } else {
 
         //Écrit le contenu de la var "msg" dans le fichier "Settings.txt" 
         //et affiche le contenu de la var "write_err_msg" si une erreur est encontré.
-        comunication.err_name = write_err.name.to_string();
-        comunication.err_msg = write_err.msg.to_string();
+        runtime_blob.comunication.err_name = write_err.name.to_string();
+        runtime_blob.comunication.err_msg = write_err.msg.to_string();
     };
-
-    runtime_blob = RuntimeFunctionBlob {
-        settings,
-        core_functions,
-        comunication,
-    };
-
-    runtime_blob
 }

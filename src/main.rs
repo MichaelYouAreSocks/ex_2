@@ -12,13 +12,13 @@ use devinette_numeros::{
 fn main() {
 
     //Initialisation des vars, constantes et plages si applicable.
-    let mut runtime_blob: RuntimeFunctionBlob = default_settings();
+    default_settings();
     
     //Boucle contenant le program.
     while !runtime_blob.core_functions.stop {
 
         //
-        runtime_blob = main_menu_logic(runtime_blob);
+        main_menu_logic();
 
         //Efface l'écran et affiche le titre du jeu.
         cls_title(); 

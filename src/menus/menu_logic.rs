@@ -16,7 +16,7 @@ use crate::{
     RuntimeFunctionBlob,
 };
 
-pub fn main_menu_logic(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+pub fn main_menu_logic() {
     //Quite le progam si le joueur veut plus jouer.
     runtime_blob = main_menu(runtime_blob);
 
@@ -41,7 +41,7 @@ pub fn main_menu_logic(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunction
     runtime_blob
 }
 
-fn options_menu_logic(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+fn options_menu_logic() {
     loop {
         //Affiche le menu des options avec leur configuration actuel.
         runtime_blob = options_menu(runtime_blob);
