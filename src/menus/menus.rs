@@ -3,20 +3,19 @@ use crate::{
     utilities::{
         cls_scr::cls_title,
         questions::{
-            numeric_input, yes_no_else_input
+            numeric_input, 
+            yes_no_else_input
         }
-    }, Comunication, RuntimeFunctionBlob 
+    }, 
+    Comunication, 
+    CoreFunctions, 
+    Settings
 };
 
-pub fn main_menu(mut runtime_blob:RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+pub fn main_menu(core_functions: &Box<CoreFunctions>,mut comunication: Box<Comunication>) -> Box<Comunication> {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
-    let RuntimeFunctionBlob {
-        settings,
-        core_functions, 
-        mut comunication,
-    } = runtime_blob;
 
     loop {
         //Affiche un message différant dépendant de si le joueur joue plus d'une fois.
@@ -24,7 +23,7 @@ pub fn main_menu(mut runtime_blob:RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             //Affiche un message spécifique dépendant de si le joueur joue sa première partie de la session.
             format!(
                 "1 -> Play{}!\n2 -> Options\n0 -> Quit{}", 
-                if &core_functions.first_cycle == &true {""} else {" again"}, 
+                if core_functions.first_cycle == true {""} else {" again"}, 
                 match comunication.msg.as_str() {
                     "" => "".to_string(),
                     _ => format!("\n{}", &comunication.msg)
@@ -32,7 +31,7 @@ pub fn main_menu(mut runtime_blob:RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             )
         };
 
-        comunication = yes_no_else_input(comunication,wrong);
+        comunication.user_in_alpha = yes_no_else_input(&comunication,&wrong);
 
         //Laisse l'utilisateur choisir s'il veux jouer.
         match comunication.user_in_alpha.as_str() {
@@ -47,24 +46,21 @@ pub fn main_menu(mut runtime_blob:RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 };
                 comunication.user_in_alpha = String::new();
                 comunication.user_in_u32 = 0;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Joue au jeu.
             "y" | "Y" | "" | "1" => {
                 cls_title();
                 comunication.user_in_alpha = String::new();
                 comunication.user_in_u32 = 1;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Affiche les oprions.
             "o" | "O" | "s" | "S" | "2" => {
                 cls_title();
                 comunication.user_in_alpha = String::new();
                 comunication.user_in_u32 = 2;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Atrappe tout les autres inputs et indique qu'ils sont incorrect.
             _ => {
@@ -72,24 +68,11 @@ pub fn main_menu(mut runtime_blob:RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 wrong = true
             },
         }
-    };
+    }
 }
 
 //Menu d'options de jeu.
-pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
-    let RuntimeFunctionBlob {
-        settings, 
-        core_functions, 
-        comunication: _,
-    } = runtime_blob;
-
-    let mut comunication = Comunication {
-        msg: String::new(),
-        user_in_alpha: String::new(),
-        user_in_u32: 0,
-        err_msg: "".into(),
-        err_name: "".into(),
-    };
+pub fn options_menu(mut comunication: Box<Comunication>, settings: &Box<Settings>) -> Box<Comunication> {
     
     loop {
         //Concatène le menu des option.
@@ -102,39 +85,27 @@ pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlo
         );
         
         //Permet de choisir quelle option le joueur aimerait changer.
-        comunication = numeric_input(comunication);
+        comunication.user_in_u32 = numeric_input(&comunication);
         match comunication.user_in_u32 {
             //Retourne au menu d'acueil.
             0 => {
                 cls_title();
-                comunication.user_in_alpha = String::new();
-                comunication.user_in_u32 = 0;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Option de la taille de la plage à chercher chaque manche.
             1 => {
                 cls_title();
-                comunication.user_in_alpha = String::new();
-                comunication.user_in_u32 = 1;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Option du nombre de tentatives par manches.
             2 => {
                 cls_title();
-                comunication.user_in_alpha = String::new();
-                comunication.user_in_u32 = 2;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Option d'indice.
             3 => {
                 cls_title();
-                comunication.user_in_alpha = String::new();
-                comunication.user_in_u32 = 3;
-                runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
-                return runtime_blob
+                return comunication;
             },
             //Atrappe touts les autres inputs et indique qu'ils sont incorrect.
             _ => {
