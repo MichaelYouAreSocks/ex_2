@@ -14,7 +14,7 @@ fn main() {
     //Initialisation des vars, constantes et plages si applicable.
     if let Ok(mut runtime_blob) = settings_file() {
 
-        let mut core_function: Box<CoreFunctions> = runtime_blob.core_functions;
+        let mut core_function: &CoreFunctions = &runtime_blob.core_functions;
     
         //Boucle contenant le program.
         while runtime_blob.core_functions.stop == false {

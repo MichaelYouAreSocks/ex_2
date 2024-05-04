@@ -29,9 +29,9 @@ pub fn default_settings() -> Box<RuntimeFunctionBlob> {
 
     //Initialisation des vars, constantes et plages si applicable.
     let runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob {
-        settings: Box::new(settings),
-        core_functions: Box::new(core_functions),
-        comunication: Box::new(comunication),
+        settings: settings,
+        core_functions: core_functions,
+        comunication: comunication,
     };
 
     //

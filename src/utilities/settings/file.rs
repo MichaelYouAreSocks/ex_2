@@ -1,13 +1,13 @@
 use std::{fs::{write,File,OpenOptions}, io::{prelude::*, BufReader,Result}};
-use crate::{ErrFormat, RuntimeFunctionBlob, utilities::settings::defaults::default_settings};
+use crate::{utilities::settings::defaults::default_settings, Comunication, CoreFunctions, ErrFormat, RuntimeFunctionBlob, Settings};
 
 pub fn settings_file() -> Result<Box<RuntimeFunctionBlob>> {
     
     //Charge les paramêtres par défault en mémoir et les sépart en trois type qui sont : "Settings", "CoreFunctions", et "Comunication".
     let runtime_blob = default_settings();
-    let mut settings: Box<crate::Settings> = runtime_blob.settings;
-    let mut core_functions: Box<crate::CoreFunctions> = runtime_blob.core_functions;
-    let mut comunication: Box<crate::Comunication> = runtime_blob.comunication;
+    let mut settings: Settings = runtime_blob.settings;
+    let mut core_functions: CoreFunctions = runtime_blob.core_functions;
+    let mut comunication: Comunication = runtime_blob.comunication;
     
     //Concatène le contenu de "Settings.txt" dans la var "comunication.msg".
     comunication.msg = format!(

@@ -34,7 +34,7 @@ pub struct ErrFormat {
 
 // Concatène les "stucts" pour faciliter l'échange d'information entre les différentes fonctions. 
 pub struct RuntimeFunctionBlob {
-    pub settings: Box<Settings>, //
-    pub core_functions: Box<CoreFunctions>, //
-    pub comunication: Box<Comunication>, //
+    pub settings: Settings, //
+    pub core_functions: CoreFunctions, //
+    pub comunication: Comunication, //
 }

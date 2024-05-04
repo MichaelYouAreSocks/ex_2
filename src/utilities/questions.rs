@@ -3,7 +3,7 @@ use crate::{utilities::cls_scr::cls_title, Comunication};
 use std::io;
 
 //Transforme une valeur alpha-numérique en numérique sans négatif.
-pub fn numeric_input(comunication: &Box<Comunication>) -> u32 {
+pub fn numeric_input(comunication: &Comunication) -> u32 {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Permet d'afficher un message si le dernier input du joueur est faux.
@@ -50,7 +50,7 @@ pub fn numeric_input(comunication: &Box<Comunication>) -> u32 {
 }
 
 //Permet d'avoir une multitude de choix de réponces à une question.
-pub fn yes_no_else_input(comunication: &Box<Comunication>,wrong: &bool) -> String {
+pub fn yes_no_else_input(comunication: &Comunication,wrong: &bool) -> String {
 
     //
     let mut user_in_alpha: String = String::new();

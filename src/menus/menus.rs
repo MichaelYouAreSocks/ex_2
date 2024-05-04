@@ -12,7 +12,7 @@ use crate::{
     Settings
 };
 
-pub fn main_menu(core_functions: &Box<CoreFunctions>,mut comunication: Box<Comunication>) -> Box<Comunication> {
+pub fn main_menu(core_functions: &CoreFunctions,mut comunication: Comunication) -> Comunication {
 
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
@@ -72,7 +72,7 @@ pub fn main_menu(core_functions: &Box<CoreFunctions>,mut comunication: Box<Comun
 }
 
 //Menu d'options de jeu.
-pub fn options_menu(mut comunication: Box<Comunication>, settings: &Box<Settings>) -> Box<Comunication> {
+pub fn options_menu(mut comunication: Comunication, settings: &Settings) -> Comunication {
     
     loop {
         //Concatène le menu des option.
