@@ -1,8 +1,7 @@
-use crate::{RuntimeFunctionBlob,Settings,CoreFunctions,Comunication};
+use crate::{Comunication, CoreFunctions, RuntimeFunctionBlob, Settings};
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
-pub fn default_settings() -> Box<RuntimeFunctionBlob> {
-
+pub fn default_settings() -> RuntimeFunctionBlob {
     //
     let settings: Settings = Settings {
         max_range: 100,
@@ -35,5 +34,5 @@ pub fn default_settings() -> Box<RuntimeFunctionBlob> {
     };
 
     //
-    Box::new(runtime_blob)
+    runtime_blob
 }
