@@ -71,7 +71,7 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob> {
             //Importe les option de jeu du fichier "Settings.txt"
             settings_raw = match read_to_string(settings_file) {
                 Ok(settings_raw) => {
-                    settings_line_count = count_string_lines(settings_raw.as_str());
+                    settings_line_count = settings_raw.lines().count();
 
                     //
                     settings_raw
@@ -180,8 +180,4 @@ fn write_default_settings_to_file(contents: &String, path: &String) -> Result<()
 fn open_and_read_existing_file(path: &String) -> Result<File> {
     let settings_file = OpenOptions::new().read(true).write(true).open(path);
     settings_file
-}
-
-fn count_string_lines(s: &str) -> usize {
-    s.lines().count()
 }
