@@ -7,7 +7,6 @@ pub fn numeric_input(msg: &String) -> u32 {
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Permet d'afficher un message si le dernier input du joueur est faux.
     let mut user_in_alpha: String = String::new(); //
-    let user_in_u32: u32 = 0; //
 
     loop {
         //Affiche le context de l'input. Et affiche l'input s'il n'est pas correct.
@@ -21,8 +20,7 @@ pub fn numeric_input(msg: &String) -> u32 {
                 cls_title();
                 println!(
                     "{}\n'{}' isn't a valid input. Please try again.",
-                    msg,
-                    user_in_alpha.trim()
+                    msg,user_in_alpha.trim()
                 );
                 user_in_alpha = String::new();
             }
@@ -34,7 +32,7 @@ pub fn numeric_input(msg: &String) -> u32 {
             .expect("Failed to read line");
 
         //Transformation d'une var alpha-num. en numérique sans négatif si c'est possible.
-        if Ok(user_in_u32) == user_in_alpha.trim().parse() {
+        if let Ok(user_in_u32) = user_in_alpha.trim().parse::<u32>() {
             //
             return user_in_u32
 

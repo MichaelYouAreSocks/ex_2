@@ -87,7 +87,6 @@ pub fn options_menu(comunication: &Comunication, settings: &Settings) -> u8 {
         );
 
         //Permet de choisir quelle option le joueur aimerait changer.
-        //comunication.user_in_u32 = numeric_input(&comunication);
         match numeric_input(&msg) {
             //Retourne au menu d'acueil.
             0 => {
