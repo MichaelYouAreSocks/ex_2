@@ -1,6 +1,5 @@
-----------------------------------------
 Features:
-
+----------------------------------------
 
 Customisable game size.
 
@@ -11,8 +10,9 @@ Game hints toggle.
 Saving settings in separate file.*
 
 Loading settings from separate file.*
-----------------------------------------
+
 To implement:
+----------------------------------------
 
 High score board.
 
