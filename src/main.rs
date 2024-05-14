@@ -1,6 +1,6 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use devinette_numeros::{
-    menus::menu_logic::main_menu_logic,
+    menus::start::main_menu,
     utilities::{cls_scr::cls_title, settings::file::settings_file}
 };
 
@@ -21,7 +21,7 @@ fn main() {
                 cls_title();
 
                 //
-                runtime_blob = main_menu_logic(runtime_blob)
+                runtime_blob = main_menu(runtime_blob)
             }
         }
         Err(_) => {
