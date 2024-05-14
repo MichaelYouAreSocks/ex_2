@@ -13,7 +13,10 @@ pub fn game_size(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
         "Input the largest number you want.\nCurrent:\t{}",
         runtime_blob.settings.max_range
     );
-    runtime_blob.settings.max_range = numeric_input(&runtime_blob.comunication.msg);
+    let tmp = numeric_input(&runtime_blob.comunication.msg);
+    if tmp >= runtime_blob.settings.min_range {
+        runtime_blob.settings.max_range = tmp;
+    };
     cls_title();
     runtime_blob
 }
@@ -24,7 +27,10 @@ pub fn game_tries(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob 
         "How many attempts do you want?\nCurrent:\t{}",
         runtime_blob.settings.max_tries
     );
-    runtime_blob.settings.max_tries = numeric_input(&runtime_blob.comunication.msg);
+    let tmp = numeric_input(&runtime_blob.comunication.msg);
+    if tmp >= runtime_blob.settings.min_tries {
+        runtime_blob.settings.max_tries = tmp
+    };
     cls_title();
     runtime_blob
 }

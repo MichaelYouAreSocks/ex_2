@@ -13,7 +13,7 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob> {
 
     //Concatène le contenu de "Settings.txt" dans la var "comunication.msg".
     let default_options: String = format!(
-        "-This file contains the settings for the Number Guessing Game.\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}",
+        "-This file contains the settings for the Number Guessing Game.\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}",
 
         "--------------------------------------------------------------",
 
@@ -25,6 +25,9 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob> {
 
         "-How many atempts do you want to guess the random number?",
         &runtime_blob.settings.max_tries,
+
+        "-How many atempts do you want to at least have?",
+        &runtime_blob.settings.min_tries,
 
         "-Do you want hints while you play?",
         &runtime_blob.settings.guess_hint

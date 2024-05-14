@@ -7,8 +7,9 @@ pub fn default_settings() -> RuntimeFunctionBlob {
         max_range: 100,
         min_range: 1,
         max_tries: 7,
+        min_tries:  1,
         guess_hint: true,
-        settings_count: 4,
+        settings_count: 5,
     };
 
     //
