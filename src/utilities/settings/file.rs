@@ -1,6 +1,10 @@
 use {
     crate::{utilities::settings::defaults::default_settings, ErrFormat, RuntimeFunctionBlob},
-    std::{fs::{write, File, OpenOptions},io::{read_to_string, Result},str::Lines}
+    std::{
+        fs::{write, File, OpenOptions},
+        io::{read_to_string, Result},
+        str::Lines,
+    },
 };
 
 pub fn settings_file() -> Result<RuntimeFunctionBlob> {
@@ -81,41 +85,64 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob> {
             //
             for _ in 0..settings_line_count {
                 //
-                let tmp = match settings_as_lines.next() {Some(tmp) => tmp,None => break};
+                let tmp = match settings_as_lines.next() {
+                    Some(tmp) => tmp,
+                    None => break,
+                };
 
                 //
                 (tmp_err_msg.name, tmp_err_msg.msg) = match imported_settings {
                     0 => {
                         //
-                        if let Ok(tmp) = tmp.trim().parse::<u32>() {runtime_blob.settings.max_range = tmp};
+                        if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                            runtime_blob.settings.max_range = tmp
+                        };
                         //
                         imported_settings = imported_settings + 1;
                         //
-                        (String::from("Max_range"),String::from("a number from 1 to 4'294'967'295"))
+                        (
+                            String::from("Max_range"),
+                            String::from("a number from 1 to 4'294'967'295"),
+                        )
                     }
                     1 => {
                         //
-                        if let Ok(tmp) = tmp.trim().parse::<u32>() {runtime_blob.settings.min_range = tmp};
+                        if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                            runtime_blob.settings.min_range = tmp
+                        };
                         //
                         imported_settings = imported_settings + 1;
                         //
-                        (String::from("Min_range"),String::from("a number from 0 to 4'294'967'294"))
+                        (
+                            String::from("Min_range"),
+                            String::from("a number from 0 to 4'294'967'294"),
+                        )
                     }
                     2 => {
                         //
-                        if let Ok(tmp) = tmp.trim().parse::<u32>() {runtime_blob.settings.max_tries = tmp};
+                        if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                            runtime_blob.settings.max_tries = tmp
+                        };
                         //
                         imported_settings = imported_settings + 1;
                         //
-                        (String::from("Max_tries"),String::from("a number from 1 to 4'294'967'295"),)
+                        (
+                            String::from("Max_tries"),
+                            String::from("a number from 1 to 4'294'967'295"),
+                        )
                     }
                     3 => {
                         //
-                        if let Ok(tmp) = tmp.trim().parse::<bool>() {runtime_blob.settings.guess_hint = tmp};
+                        if let Ok(tmp) = tmp.trim().parse::<bool>() {
+                            runtime_blob.settings.guess_hint = tmp
+                        };
                         //
                         imported_settings = imported_settings + 1;
                         //
-                        (String::from("Guess_hint"),String::from("'true' or 'false'"))
+                        (
+                            String::from("Guess_hint"),
+                            String::from("'true' or 'false'"),
+                        )
                     }
                     _ => (String::from(""), String::from("")),
                 };
@@ -137,7 +164,10 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob> {
         Err(_) => {
             runtime_blob.comunication.err_name = write_err.name;
             runtime_blob.comunication.err_msg = write_err.msg;
-            match write_default_settings_to_file(&default_options, &path) {Ok(()) => Ok(runtime_blob),Err(_) => todo!()}
+            match write_default_settings_to_file(&default_options, &path) {
+                Ok(()) => Ok(runtime_blob),
+                Err(_) => todo!(),
+            }
         }
     }
 }

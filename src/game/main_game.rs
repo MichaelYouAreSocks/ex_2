@@ -19,7 +19,10 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
         //Affiche les indices si selectionné dans les options.
         match runtime_blob.settings.guess_hint {
             //Concatène l'indice dans la var "msg".
-            true => runtime_blob.comunication.msg = format!("The number is between {} and {}.", small_guess, large_guess),
+            true => {
+                runtime_blob.comunication.msg =
+                    format!("The number is between {} and {}.", small_guess, large_guess)
+            }
             //S'assure que la var "msg" soit vide.
             false => runtime_blob.comunication.msg = "".to_string(),
         };
@@ -31,7 +34,8 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             //Affiche un message indiquant que le dernier numéro deviné est plus petit que celui cherché.
             Ordering::Less => {
                 cls_title();
-                println!("{} is too small! {} {} left",
+                println!(
+                    "{} is too small! {} {} left",
                     runtime_blob.comunication.user_in_u32,
                     runtime_blob.settings.max_tries - tries - 1,
                     if tries == 1 { "trie" } else { "tries" }
@@ -50,21 +54,24 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                     runtime_blob.comunication.user_in_u32,
                     runtime_blob.settings.max_tries - tries - 1,
                     if tries == 1 { "trie" } else { "tries" }
-                ); 
+                );
                 //Stoque le numéro deviné s'il est plus proche de la cible que le précédent.
-                if large_guess > runtime_blob.comunication.user_in_u32 {large_guess = runtime_blob.comunication.user_in_u32}; 
+                if large_guess > runtime_blob.comunication.user_in_u32 {
+                    large_guess = runtime_blob.comunication.user_in_u32
+                };
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
             Ordering::Equal => {
                 cls_title();
-                runtime_blob.comunication.msg = format!("You win! The correct number was: '{}'", secret_number);
+                runtime_blob.comunication.msg =
+                    format!("You win! The correct number was: '{}'", secret_number);
                 return runtime_blob;
             }
         };
     }
     cls_title();
     //Indique au joueur qu'il a perdu et quel était le numéro cherché.
-    runtime_blob.comunication.msg = format!("You loose! The secret number was {}", secret_number); 
+    runtime_blob.comunication.msg = format!("You loose! The secret number was {}", secret_number);
     //runtime_blob = RuntimeFunctionBlob {settings,core_functions,comunication};
     runtime_blob
 }

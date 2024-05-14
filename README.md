@@ -1,12 +1,18 @@
 A simple yet improved number guessing game.
 
+
 Features:
 
 Customisable game size.
+
 Customisable number of attempts.
+
 Game hints toggle.
-Saveable settings in separate file*.
-Loading of settings from file*.
+
+Saving settings in separate file.*
+
+Loading settings from separate file.*
+
 
 To implement:
 

@@ -14,13 +14,14 @@ pub fn numeric_input(msg: &String) -> u32 {
             //Affiche le context de la question.
             false => {
                 println!("{}", msg);
-            },
+            }
             //Affiche que la var "input" n'était pas correct en plus du context de la question.
             true => {
                 cls_title();
                 println!(
                     "{}\n'{}' isn't a valid input. Please try again.",
-                    msg,user_in_alpha.trim()
+                    msg,
+                    user_in_alpha.trim()
                 );
                 user_in_alpha = String::new();
             }
@@ -34,9 +35,11 @@ pub fn numeric_input(msg: &String) -> u32 {
         //Transformation d'une var alpha-num. en numérique sans négatif si c'est possible.
         if let Ok(user_in_u32) = user_in_alpha.trim().parse::<u32>() {
             //
-            return user_in_u32
+            return user_in_u32;
 
         //
+        } else if "".to_string() == user_in_alpha.trim().parse::<String>().unwrap() {
+            return 0;
         } else {
             //
             wrong = true
