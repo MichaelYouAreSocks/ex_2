@@ -9,22 +9,22 @@ use crate::{
 
 //Demande la taille de la plage numérique à chercher souhaité.
 pub fn game_size(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
-    let msg: String = format!(
+    runtime_blob.comunication.msg = format!(
         "Input the largest number you want.\nCurrent:\t{}",
         runtime_blob.settings.max_range
     );
-    runtime_blob.settings.max_range = numeric_input(&msg);
+    runtime_blob.settings.max_range = numeric_input(&runtime_blob.comunication.msg);
     cls_title();
     runtime_blob
 }
 
 //Demande le nombre de tentatives que le joueur aimerait avoir.
 pub fn game_tries(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
-    let msg: String = format!(
+    runtime_blob.comunication.msg = format!(
         "How many attempts do you want?\nCurrent:\t{}",
         runtime_blob.settings.max_tries
     );
-    runtime_blob.settings.max_tries = numeric_input(&msg);
+    runtime_blob.settings.max_tries = numeric_input(&runtime_blob.comunication.msg);
     cls_title();
     runtime_blob
 }
@@ -47,13 +47,11 @@ pub fn game_hint(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             //Retourne à la liste des options et indique que le joueur ne veux pas d'indices.
             "n" | "N" | "0" | "false" | "False" | "f" | "F" => {
                 cls_title();
-                runtime_blob.comunication.msg = String::new();
                 break false;
             }
             //Retourne à la liste des options et indique que le joueur veux des indices.
-            "y" | "Y" | "1" | "true" | "True" | "t" | "T" => {
+            "y" | "Y" | "1" | "true" | "True" | "t" | "T"  => {
                 cls_title();
-                runtime_blob.comunication.msg = String::new();
                 break true;
             }
             "" => {
