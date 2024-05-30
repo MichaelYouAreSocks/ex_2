@@ -1,35 +1,42 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use devinette_numeros::{
-    menus::menu_logic::main_menu_logic,
-    utilities::{
-        cls_scr::cls_title, 
-        settings::file::settings_file,
-    },
-    CoreFunctions
+    menus::start::main_menu,
+    utilities::{cls_scr::cls_title, settings::file::file::settings_file},
 };
+use std::process::{ExitCode, ExitStatus};
 
 //Logiciel mère.
 fn main() {
+    //
+    cls_title();
+
+    //
+    let runtime_blob = settings_file();
 
     //Initialisation des vars, constantes et plages si applicable.
-    if let Ok(mut runtime_blob) = settings_file() {
+    match runtime_blob {
+        Ok(mut runtime_blob) => {
+            //Boucle contenant le program.
+            while runtime_blob.core_functions.stop = !ExitStatus {
+                //
+                cls_title();
 
-        let mut core_function: Box<CoreFunctions> = runtime_blob.core_functions;
-    
-        //Boucle contenant le program.
-        while runtime_blob.core_functions.stop == false {
-    
-            //
-            cls_title();
-    
-            //
-            runtime_blob = main_menu_logic(runtime_blob);
-        };
-
-        //
-        if runtime_blob.comunication.err_name != "" {
-            println!("Error:\t{}\n{}",runtime_blob.comunication.err_name,runtime_blob.comunication.err_msg)
+                //
+                runtime_blob = main_menu(runtime_blob)
+            }
         }
-    };
-}
+        Err(_) => {
+            let runtime_blob = runtime_blob.unwrap();
 
+            //
+            println!(
+                "Error : \n{}\n\n{}\n{}\n\n{}\n",
+                runtime_blob.comunication.err_name,
+                "Probable cause : ",
+                runtime_blob.comunication.err_msg,
+                "Details : ",
+                //Error
+            )
+        }
+    }
+}
