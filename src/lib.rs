@@ -1,15 +1,6 @@
-use std::process::ExitCode;
-
 pub mod game;
 pub mod menus;
 pub mod utilities;
-
-//
-pub struct ErrFormat {
-    pub code: ExitCode, //
-    pub name: String,   //
-    pub msg: String,    //
-}
 
 //
 pub struct Settings {
@@ -19,6 +10,14 @@ pub struct Settings {
     pub min_tries: u32,     //Quantité d'éssais minimum autorisé par le jeu.
     pub guess_hint: bool,   //Affiche un indice avec la plâge numérique restante à chercher.
     pub settings_count: u8, //Quantité de variables qui sont des options pour le joueur.
+}
+
+//
+#[derive(Clone)]
+pub struct ErrFormat {
+    pub code: u8, //
+    pub name: String,   //
+    pub msg: String,    //
 }
 
 //
