@@ -56,7 +56,7 @@ pub fn game_hint(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 break false;
             }
             //Retourne à la liste des options et indique que le joueur veux des indices.
-            "y" | "Y" | "1" | "true" | "True" | "t" | "T"  => {
+            "y" | "Y" | "1" | "true" | "True" | "t" | "T" => {
                 cls_title();
                 break true;
             }

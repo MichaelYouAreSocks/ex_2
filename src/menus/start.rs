@@ -1,6 +1,8 @@
+use std::process::ExitCode;
+
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
-    game::main_game::game,
+    game::game::game,
     menus::options::options_menu,
     utilities::{cls_scr::cls_title, questions::yes_no_else_input},
     RuntimeFunctionBlob,
@@ -42,7 +44,7 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 } else {
                     println!("Hope you'll play soon!")
                 };
-                runtime_blob.core_functions.stop = true;
+                runtime_blob.core_functions.stop = ExitCode::from(5);
                 break runtime_blob;
             }
             //Joue au jeu.

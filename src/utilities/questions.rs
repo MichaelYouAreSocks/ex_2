@@ -38,7 +38,7 @@ pub fn numeric_input(msg: &String) -> u32 {
             return user_in_u32;
 
         //
-        } else if user_in_alpha.trim().parse::<String>().unwrap() == ""{
+        } else if user_in_alpha.trim().parse::<String>().unwrap() == "" {
             return 0;
         } else {
             //

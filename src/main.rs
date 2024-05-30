@@ -1,8 +1,9 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use devinette_numeros::{
     menus::start::main_menu,
-    utilities::{cls_scr::cls_title, settings::file::settings_file},
+    utilities::{cls_scr::cls_title, settings::file::file::settings_file},
 };
+use std::process::{ExitCode, ExitStatus};
 
 //Logiciel mère.
 fn main() {
@@ -16,7 +17,7 @@ fn main() {
     match runtime_blob {
         Ok(mut runtime_blob) => {
             //Boucle contenant le program.
-            while !runtime_blob.core_functions.stop {
+            while runtime_blob.core_functions.stop = !ExitStatus {
                 //
                 cls_title();
 
