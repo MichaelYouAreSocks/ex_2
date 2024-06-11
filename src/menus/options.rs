@@ -3,7 +3,10 @@ use crate::{
     utilities::{
         cls_scr::cls_title,
         questions::numeric_input,
-        settings::in_game::{game_hint, game_size, game_tries},
+        settings::{
+            in_game::{game_hint, game_size, game_tries},
+            file::edit::save_setting_to_file,
+        },
     },
     RuntimeFunctionBlob,
 };
@@ -35,17 +38,17 @@ pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlo
             //Option de la taille de la plage à chercher chaque manche.
             1 => {
                 cls_title();
-                runtime_blob = game_size(runtime_blob)
+                runtime_blob = save_setting_to_file(game_size(runtime_blob));
             }
             //Option du nombre de tentatives par manches.
             2 => {
                 cls_title();
-                runtime_blob = game_tries(runtime_blob)
+                runtime_blob = save_setting_to_file(game_tries(runtime_blob));
             }
             //Option d'indice.
             3 => {
                 cls_title();
-                runtime_blob = game_hint(runtime_blob)
+                runtime_blob = save_setting_to_file(game_hint(runtime_blob));
             }
             //Atrappe touts les autres inputs et indique qu'ils sont incorrect.
             _ => {

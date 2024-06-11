@@ -1,42 +1,37 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
-use devinette_numeros::{
-    menus::start::main_menu,
-    utilities::{cls_scr::cls_title, settings::file::file::settings_file},
-};
-use std::process::{ExitCode, ExitStatus};
+use devinette_numeros::{RuntimeFunctionBlob, ErrFormat, menus::start::main_menu, utilities::{cls_scr::cls_title, settings::file::file::settings_file}};
 
 //Logiciel mère.
 fn main() {
     //
     cls_title();
 
-    //
-    let runtime_blob = settings_file();
+    let settings_loading_check: Result<RuntimeFunctionBlob, ErrFormat> = settings_file();
 
     //Initialisation des vars, constantes et plages si applicable.
-    match runtime_blob {
+    if match settings_loading_check.clone() {
         Ok(mut runtime_blob) => {
             //Boucle contenant le program.
-            while runtime_blob.core_functions.stop = !ExitStatus {
-                //
-                cls_title();
+            while !&runtime_blob.core_functions.stop {
 
                 //
                 runtime_blob = main_menu(runtime_blob)
             }
+            runtime_blob
         }
-        Err(_) => {
-            let runtime_blob = runtime_blob.unwrap();
-
-            //
+        Err(error_handler) => {
+            
             println!(
-                "Error : \n{}\n\n{}\n{}\n\n{}\n",
-                runtime_blob.comunication.err_name,
+                "Error code : \n{}\n\n{}\n{}\n\n{}\n{}",
+                error_handler.code,
+                "Error :",
+                error_handler.name,
                 "Probable cause : ",
-                runtime_blob.comunication.err_msg,
-                "Details : ",
-                //Error
-            )
+                error_handler.msg,
+            );
+            settings_loading_check.unwrap()
         }
-    }
+    }.core_functions.error_handler.code != 0 {
+        
+    };
 }

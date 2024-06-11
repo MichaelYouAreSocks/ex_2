@@ -1,32 +1,36 @@
-use std::process::ExitCode;
-
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
-    game::game::game,
+    game::game,
     menus::options::options_menu,
-    utilities::{cls_scr::cls_title, questions::yes_no_else_input},
+    utilities::{cls_scr::cls_title, questions::yes_no_else_input, 
+        //score_board::file::read_score_file
+    },
     RuntimeFunctionBlob,
 };
 
 pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
+    //let score = read_score_file(runtime_blob);
 
     loop {
         //Affiche un message différant dépendant de si le joueur joue plus d'une fois.
         runtime_blob.comunication.msg = {
             //Affiche un message spécifique dépendant de si le joueur joue sa première partie de la session.
             format!(
-                "1 -> Play{}\n2 -> Options\n0 -> Quit{}",
+                "1 -> Play{}\t\t\t{}\n2 -> Options\t\t\t{}\n0 -> Quit{}\t\t\t{}",
                 if runtime_blob.core_functions.first_cycle == true {
                     "!"
                 } else {
                     " again?"
                 },
+                String::new(),
+                String::new(),
                 match runtime_blob.comunication.msg.as_str() {
                     "" => "".to_string(),
                     _ => format!("\n{}", &runtime_blob.comunication.msg),
-                }
+                },
+                String::new()
             )
         };
 
@@ -44,7 +48,8 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 } else {
                     println!("Hope you'll play soon!")
                 };
-                runtime_blob.core_functions.stop = ExitCode::from(5);
+                runtime_blob.core_functions.error_handler.code = 5;
+                runtime_blob.core_functions.stop = true;
                 break runtime_blob;
             }
             //Joue au jeu.
@@ -65,6 +70,12 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 runtime_blob = options_menu(runtime_blob);
                 runtime_blob.comunication.msg = String::new();
             }
+            //Affiche le scorboard.
+            //"b" | "B" | "r" | "R" | "3" => {
+            //    cls_title();
+            //    runtime_blob = score_board(runtime_blob);
+            //    
+            //}
             //Atrappe tout les autres inputs et indique qu'ils sont incorrect.
             _ => {
                 cls_title();

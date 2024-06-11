@@ -1,15 +1,7 @@
-use std::process::{ExitCode, ExitStatus};
-
 use crate::{Comunication, CoreFunctions, ErrFormat, RuntimeFunctionBlob, Settings};
 
 //Génère le fichier d'options s'il n'existe pas et le lit.
 pub fn default_settings() -> RuntimeFunctionBlob {
-    let error_handler = ErrFormat {
-        code: ExitCode::default(),
-        status: ExitStatus::default(),
-        name: String::new(),
-        msg: String::new(),
-    };
 
     //
     let settings: Settings = Settings {
@@ -25,7 +17,12 @@ pub fn default_settings() -> RuntimeFunctionBlob {
     let core_functions: CoreFunctions = CoreFunctions {
         first_cycle: true,
         stop: false,
-        error_handler,
+        error_handler: ErrFormat {
+            code: 0,
+            name: String::new(),
+            msg: String::new(),
+        },
+        settings_file_path: String::from("Settings.txt"),
     };
 
     //

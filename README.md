@@ -7,14 +7,14 @@ Customisable number of attempts.
 
 Game hints toggle.
 
-Saving settings in separate file.*
+Saving settings in separate file.
 
-Loading settings from separate file.*
+Loading settings from separate file.
 
 To implement:
 ----------------------------------------
 
-High score board.
+High score board.*
 
 ----------------------------------------
 *Work in progress

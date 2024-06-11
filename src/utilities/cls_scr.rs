@@ -8,5 +8,5 @@ pub fn cls_title() {
         .clear_screen()
         .expect("Couldn't clear screen.");
     //Affiche le nom du program.
-    println!("Guess the number!\n_________________");
+    println!("Guess the number!\n--------------");
 }
