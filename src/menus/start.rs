@@ -2,13 +2,13 @@
 use crate::{
     game::game,
     menus::options::options_menu,
-    utilities::{cls_scr::cls_title, questions::yes_no_else_input, 
+    utilities::{cls_scr::cls_title, questions::yes_no_else_input, score_board, 
         //score_board::file::read_score_file
     },
     RuntimeFunctionBlob,
 };
 
-pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, score_board: &Vec<String>) -> RuntimeFunctionBlob {
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
     //let score = read_score_file(runtime_blob);

@@ -20,7 +20,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
     //
     for lines_searched in 0..settings_line_count {
         //
-        let tmp = match settings_as_lines.next() {
+        let individual_setting = match settings_as_lines.next() {
             Some(tmp) => tmp,
             None => break,
         };
@@ -28,7 +28,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
         core_functions.error_handler = match imported_settings {
             0 => {
                 //
-                if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.max_range = tmp;
                     //
                     imported_settings = imported_settings + 1;
@@ -44,7 +44,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
             }
             1 => {
                 //
-                if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.min_range = tmp;
                     //
                     imported_settings = imported_settings + 1;
@@ -60,7 +60,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
             }
             2 => {
                 //
-                if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.max_tries = tmp;
                     //
                     imported_settings = imported_settings + 1;
@@ -77,7 +77,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
             }
             3 => {
                 //
-                if let Ok(tmp) = tmp.trim().parse::<u32>() {
+                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.min_tries = tmp;
                     //
                     imported_settings = imported_settings + 1;
@@ -93,7 +93,7 @@ pub fn settings_importer(settings_raw: String, mut runtime_blob: RuntimeFunction
             }
             4 => {
                 //
-                if let Ok(tmp) = tmp.trim().parse::<bool>() {
+                if let Ok(tmp) = individual_setting.trim().parse::<bool>() {
                     settings.guess_hint = tmp;
                     //
                     imported_settings = imported_settings + 1;

@@ -6,15 +6,12 @@ use {
 
 pub fn settings_file() ->  Result<RuntimeFunctionBlob, ErrFormat> {
     //Charge les paramêtres par défault en mémoir et les sépart en trois vars.
+    
+    let settings_raw: String;
 
     let RuntimeFunctionBlob {
         settings, core_functions, comunication
     } = default_settings();
-
-    let read_err = read_err();
-    let write_err = write_err();
-    
-    let settings_raw: String;
 
     //Controle si un fichier "Settings.txt" existe déja et le créé s'il n'existe pas.
     match open_and_read_existing_file(&core_functions.settings_file_path) {
@@ -22,7 +19,7 @@ pub fn settings_file() ->  Result<RuntimeFunctionBlob, ErrFormat> {
             //Importe les option de jeu du fichier "Settings.txt"
             settings_raw = match read_to_string(settings_file) {
                 Ok(tmp) => tmp,
-                Err(_) => return Err(read_err)
+                Err(_) => return Err(read_err())
             };
 
             let runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob{
@@ -45,7 +42,7 @@ pub fn settings_file() ->  Result<RuntimeFunctionBlob, ErrFormat> {
                 "Defaults were used instead");
             };
 
-            core_functions.error_handler = write_err;
+            core_functions.error_handler = write_err();
 
             let runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob{
                 settings,
@@ -64,10 +61,10 @@ pub fn settings_file() ->  Result<RuntimeFunctionBlob, ErrFormat> {
                     core_functions,
                     comunication: comunication,
                 };
-                println!("Settings file created.");
+                println!("Default settings file created and loaded.");
                 Ok(runtime_blob)
             } else {
-                return Err(write_err)
+                return Err(write_err())
             }
         }
     }
