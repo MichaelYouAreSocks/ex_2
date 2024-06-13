@@ -1,6 +1,6 @@
 [package]
 name = "number_guessing_game"
-version = "0.3.0"
+version = "0.3.2"
 authors = ["Josborne,MichaelYouAreSocks"]
 edition = "2021"
 description = "A simple number guessing game with a few quality of life improvements such as:  game size, attempts per round, hints, saving and Loading settings."
