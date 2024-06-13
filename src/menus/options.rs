@@ -5,7 +5,7 @@ use crate::{
         questions::numeric_input,
         settings::{
             in_game::{game_hint, game_size, game_tries},
-            file::edit::save_setting_to_file,
+            edit::save_setting_to_file,
         },
     },
     RuntimeFunctionBlob,

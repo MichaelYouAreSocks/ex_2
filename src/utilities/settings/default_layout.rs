@@ -1,12 +1,13 @@
+use crate::Settings;
 
-pub fn score_board(high_score: Vec<String>, other_scores: Vec<String>) -> String {
+pub fn settings_layout(settings: &Settings) -> String {
     let layout: String = format!(
-        "{}\n{}\n\n{}{}\n{}{}\n{}{}\n{}{}\n{}{}\n",
-        "-This file contains the high-score board for the Number Guessing Game.",
+        "{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n",
+        "-This file contains the settings for the Number Guessing Game.",
 
         "--------------------------------------------------------------",
 
-        "1st\t:\t",
+        "-Up to what number do you want to guess? [Max_range]",
         settings.max_range,
 
         "-From what number do you want to guess? [Min_range]",

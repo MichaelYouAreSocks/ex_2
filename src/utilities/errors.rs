@@ -1,28 +1,49 @@
 use crate::ErrFormat;
 
-pub fn read_err() -> ErrFormat {
-    //
-    let read_err: ErrFormat = ErrFormat {
-        code: 001,
-        name: format!("Reading File"),
-        msg: format!(
-            "Settings file could not be read.\n{}\n{}",
-            "If the file is being automatically removed by your anti-virus,",
-            "please add an exception to it for the game to work."
-        ),
-    };
-    read_err
-}
+pub fn error_handling(error_code: u8) -> ErrFormat {
 
-pub fn write_err() -> ErrFormat {
-    //
-    let write_err: ErrFormat = ErrFormat {
-        code: 002,
-        name: format!("Writing File"),
-        msg: format!(
-            "Settings file couldn't be created or modified.\n{}",
-            "If the game isn't in a writable directory, please move it."
-        ),
-    };
-    write_err
+    match error_code/10 {
+        1 => {
+            return ErrFormat {
+                code: error_code,
+                name: format!("Reading File"),
+                msg: format!(
+                    "{} could nor be read.\n{}\n{}",
+                    match error_code {
+                        10 => "Settings file",
+                        11 => "Score file",
+                        _ => todo!()
+                    },
+                    "If the file is being automativally remoced by your anti-virus,",
+                    "pleade add an exception to it for the game to work."
+                )
+            }
+        },
+        2 => {
+            ErrFormat {
+                code: error_code,
+                name: format!("Writing File"),
+                msg: format!(
+                    "{} couldn't be created or modified.\n{}",
+                    match error_code {
+                        20 => "Settings file",
+                        21 => "Score file",
+                        _ => todo!()
+                    },
+                    "If the game isn't in a writable directory, please move it."
+                )
+            }
+        },
+        _ => {
+            ErrFormat {
+                code: 255,
+                name: format!("New Error!"),
+                msg: format!(
+                    "This error has never been seen before!\n{}\n{}",
+                    "If you see this message, you managed to break the game in a way I didn't manage to forsee as possible.",
+                    "Please open an issue on github with a screenshot of this message to know what to do next."
+                )
+            }
+        }
+    }
 }
