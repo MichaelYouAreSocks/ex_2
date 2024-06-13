@@ -11,6 +11,9 @@ pub fn show_score_board(high_scores: &Vec<String>) {
     let wrong: bool = false;
 
     match yes_no_else_input(&comunication, &wrong) {
-        _ => {cls_title(); return}
+        _ => {
+            cls_title(); 
+            return
+        }
     };
 }
