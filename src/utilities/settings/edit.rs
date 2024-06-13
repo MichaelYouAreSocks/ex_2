@@ -1,5 +1,5 @@
 use crate::{utilities::errors::error_handling, RuntimeFunctionBlob};
-use super::default_layout::settings_layout;
+use super::settings_layout::settings_layout;
 use std::fs::write;
 
 pub fn save_setting_to_file(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {

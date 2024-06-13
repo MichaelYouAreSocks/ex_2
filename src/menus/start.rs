@@ -9,6 +9,7 @@ use crate::{
 pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String>) -> RuntimeFunctionBlob {
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
+    let mut end_game_msg: String = String::new();
 
     loop {
         //Affiche un message différant dépendant de si le joueur joue plus d'une fois.
@@ -41,20 +42,23 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String
                 runtime_blob.core_functions.first_cycle =
                     match runtime_blob.comunication.msg.as_str() {
                         "" => true,
-                        _ => false,
+                        _ => {
+                            end_game_msg = runtime_blob.comunication.msg.clone();
+                            false
+                        },
                     };
             }
             //Affiche les oprions.
             "o" | "O" | "s" | "S" | "2" => {
                 cls_title();
                 runtime_blob = options_menu(runtime_blob);
-                runtime_blob.comunication.msg = String::new();
+                runtime_blob.comunication.msg = end_game_msg.to_owned()
             }
             //Affiche le scorboard.
             "b" | "B" | "r" | "R" | "3" => {
                 cls_title();
                 show_score_board(high_scores);
-                runtime_blob.comunication.msg = String::new();
+                runtime_blob.comunication.msg = end_game_msg.to_owned()
                 
             }
             //Atrappe tout les autres inputs et indique qu'ils sont incorrect.

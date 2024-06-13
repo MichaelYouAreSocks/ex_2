@@ -1,3 +1,3 @@
 pub mod file;
-pub mod default_layout;
+pub mod score_layout;
 pub mod defaults;

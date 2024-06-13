@@ -2,7 +2,7 @@ use std::{fs::write,io::read_to_string};
 
 use crate::{utilities::{errors::error_handling, file::open::open_and_read_existing_file}, ErrFormat, RuntimeFunctionBlob};
 
-use super::{default_layout::score_board, defaults::default_scores};
+use super::{score_layout::score_board, defaults::default_scores};
 
 pub fn read_score_file(runtime_blob: &RuntimeFunctionBlob) -> Result<Vec<String>, ErrFormat> {
     

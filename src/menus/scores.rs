@@ -1,4 +1,4 @@
-use crate::{utilities::{cls_scr::cls_title, questions::yes_no_else_input, score_board::default_layout::score_board}, Comunication};
+use crate::{utilities::{cls_scr::cls_title, questions::yes_no_else_input, score_board::score_layout::score_board}, Comunication};
 
 pub fn show_score_board(high_scores: &Vec<String>) {
 
