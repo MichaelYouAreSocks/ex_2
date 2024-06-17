@@ -15,7 +15,7 @@ pub fn start_menu_layout(runtime_blob: &RuntimeFunctionBlob, high_scores: &Vec<S
                         " again?\t"
                     }
                 )
-            },
+            }
             _ => format!("\t\t\t"),
         },
         "1st : ",

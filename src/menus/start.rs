@@ -1,12 +1,15 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
     game::game,
-    menus::{options::options_menu, start_layout::start_menu_layout, scores::show_score_board},
+    menus::{options::options_menu, scores::show_score_board, start_layout::start_menu_layout},
     utilities::{cls_scr::cls_title, questions::yes_no_else_input},
     RuntimeFunctionBlob,
 };
 
-pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String>) -> RuntimeFunctionBlob {
+pub fn main_menu(
+    mut runtime_blob: RuntimeFunctionBlob,
+    high_scores: &Vec<String>,
+) -> RuntimeFunctionBlob {
     //Initialisation des vars, constantes et plages si applicable.
     let mut wrong: bool = false; //Définit la var "wrong".
     let mut end_game_msg: String = String::new();
@@ -29,7 +32,6 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String
                 } else {
                     println!("Hope you'll play soon!")
                 };
-                runtime_blob.core_functions.error_handler.code = 5;
                 runtime_blob.core_functions.stop = true;
                 break runtime_blob;
             }
@@ -45,7 +47,7 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String
                         _ => {
                             end_game_msg = runtime_blob.comunication.msg.clone();
                             false
-                        },
+                        }
                     };
             }
             //Affiche les oprions.
@@ -59,7 +61,6 @@ pub fn main_menu(mut runtime_blob: RuntimeFunctionBlob, high_scores: &Vec<String
                 cls_title();
                 show_score_board(high_scores);
                 runtime_blob.comunication.msg = end_game_msg.to_owned()
-                
             }
             //Atrappe tout les autres inputs et indique qu'ils sont incorrect.
             _ => {

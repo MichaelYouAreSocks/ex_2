@@ -1,7 +1,6 @@
 use crate::ErrFormat;
 
 pub fn error_handling(error_code: u8) -> ErrFormat {
-
     match error_code/10 {
         1 => {
             return ErrFormat {
@@ -46,4 +45,11 @@ pub fn error_handling(error_code: u8) -> ErrFormat {
             }
         }
     }
+}
+
+pub fn err_print(error_handler: &ErrFormat) {
+    println!(
+        "Error code : \n{}\n\n{}\n{}\n\n{}\n{}",
+        error_handler.code, "Error :", error_handler.name, "Probable cause : ", error_handler.msg,
+    );
 }
