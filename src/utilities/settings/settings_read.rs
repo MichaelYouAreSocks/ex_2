@@ -19,23 +19,17 @@ pub fn settings_importer(
     settings_as_lines = settings_raw.lines();
 
     settings_line_count = settings_raw.as_str().lines().count();
-    //
     for lines_searched in 0..settings_line_count {
-        //
         let individual_setting = match settings_as_lines.next() {
             Some(tmp) => tmp,
             None => break,
         };
-        //
         core_functions.error_handler = match imported_settings {
             0 => {
-                //
                 if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.max_range = tmp;
-                    //
                     imported_settings = imported_settings + 1;
                 };
-                //
                 if lines_searched > 5 {
                     break;
                 } else {
@@ -47,13 +41,10 @@ pub fn settings_importer(
                 }
             }
             1 => {
-                //
                 if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.min_range = tmp;
-                    //
                     imported_settings = imported_settings + 1;
                 };
-                //
                 if lines_searched > 8 {
                     break;
                 } else {
@@ -65,13 +56,10 @@ pub fn settings_importer(
                 }
             }
             2 => {
-                //
                 if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.max_tries = tmp;
-                    //
                     imported_settings = imported_settings + 1;
                 };
-                //
                 if lines_searched > 11 {
                     break;
                 } else {
@@ -83,13 +71,12 @@ pub fn settings_importer(
                 }
             }
             3 => {
-                //
                 if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
                     settings.min_tries = tmp;
-                    //
+
                     imported_settings = imported_settings + 1;
                 };
-                //
+
                 if lines_searched > 14 {
                     break;
                 } else {
@@ -101,13 +88,12 @@ pub fn settings_importer(
                 }
             }
             4 => {
-                //
                 if let Ok(tmp) = individual_setting.trim().parse::<bool>() {
                     settings.guess_hint = tmp;
-                    //
+
                     imported_settings = imported_settings + 1;
                 };
-                //
+
                 if lines_searched > 17 {
                     break;
                 } else {
@@ -120,7 +106,7 @@ pub fn settings_importer(
             }
             _ => core_functions.error_handler,
         };
-        //
+
         if imported_settings == settings.settings_count {
             break;
         } else {

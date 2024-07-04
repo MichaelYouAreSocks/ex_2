@@ -9,11 +9,14 @@ pub fn default_settings() -> RuntimeFunctionBlob {
         max_tries: 7,
         min_tries: 1,
         guess_hint: true,
+        max_score: 10,
+        min_score: 0,
         settings_count: 5,
     };
 
     //
     let core_functions: CoreFunctions = CoreFunctions {
+        last_game_score: vec!["".to_string()],
         first_cycle: true,
         stop: false,
         error_handler: ErrFormat {
@@ -22,7 +25,7 @@ pub fn default_settings() -> RuntimeFunctionBlob {
             msg: String::new(),
         },
         settings_file_path: String::from("settings.bin"),
-        score_board_path: String::from("score_board.bin"),
+        score_file_path: String::from("score_board.bin"),
     };
 
     //

@@ -10,25 +10,28 @@ pub struct Settings {
     pub max_tries: u32,     //Quantité d'essais manqué avant la fin du jeu.
     pub min_tries: u32,     //Quantité d'éssais minimum autorisé par le jeu.
     pub guess_hint: bool,   //Affiche un indice avec la plâge numérique restante à chercher.
+    pub max_score: u8,      //La quantité maximal de scores à afficher dans le menu et le ficher.
+    pub min_score: u8,      //La quantité minimum de scores à afficher dans le menu et le ficher.
     pub settings_count: u8, //Quantité de variables qui sont des options pour le joueur.
 }
 
 //
 #[derive(Clone, Debug)]
 pub struct ErrFormat {
-    pub code: u8,     //
-    pub name: String, //
-    pub msg: String,  //
+    pub code: u8,     //Numéro du code d'erreur.
+    pub name: String, //Nom du code d'erreure.
+    pub msg: String,  //Message pour aider à diagnostiquer l'erreur.
 }
 
 //
 #[derive(Clone)]
 pub struct CoreFunctions {
-    pub first_cycle: bool,          //Détecte si le joueur joue sa première partie.
-    pub stop: bool,                 //Permet de quiter le jeu.
-    pub error_handler: ErrFormat,   //Concatène tout ce qui se rapport à une erreure.
-    pub settings_file_path: String, //Contien l'emplacement par défaut du fichier de paramêtres.
-    pub score_board_path: String,   //Contien l'emplacement par défaut du fichier de scores.
+    pub last_game_score: Vec<String>, //
+    pub first_cycle: bool,            //Détecte si le joueur joue sa première partie.
+    pub stop: bool,                   //Permet de quiter le jeu.
+    pub error_handler: ErrFormat,     //Concatène tout ce qui se rapport à une erreure.
+    pub settings_file_path: String,   //Contien l'emplacement par défaut du fichier de paramêtres.
+    pub score_file_path: String,      //Contien l'emplacement par défaut du fichier de scores.
 }
 
 //
@@ -41,7 +44,7 @@ pub struct Comunication {
 
 #[derive(Clone)]
 pub struct RuntimeFunctionBlob {
-    pub settings: Settings,            //
-    pub core_functions: CoreFunctions, //
-    pub comunication: Comunication,    //
+    pub settings: Settings,            //Concatène la struct Settings.
+    pub core_functions: CoreFunctions, //Concatène la struct CoreFunctions.
+    pub comunication: Comunication,    //Concatène la struct Comunication.
 }

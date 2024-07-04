@@ -2,10 +2,10 @@
 use crate::{
     utilities::{
         cls_scr::cls_title,
-        questions::numeric_input,
+        inputs::numeric_input,
         settings::{
-            edit::save_setting_to_file,
-            in_game::{game_hint, game_size, game_tries},
+            in_game_settings::{game_hint, game_size, game_tries},
+            settings_edit::save_setting_to_file,
         },
     },
     RuntimeFunctionBlob,
@@ -13,7 +13,7 @@ use crate::{
 
 //Menu d'options de jeu.
 pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
-    loop {
+    'options_menu_loop: loop {
         //Concatène le menu des option.
         let msg: String = format!(
             "Options:\n{}{}{}{}\n{}{}\n{}{}\n{}",
@@ -33,7 +33,7 @@ pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlo
             //Retourne au menu d'acueil.
             0 => {
                 cls_title();
-                break;
+                break 'options_menu_loop;
             }
             //Option de la taille de la plage à chercher chaque manche.
             1 => {

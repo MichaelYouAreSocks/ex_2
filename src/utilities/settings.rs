@@ -1,6 +1,6 @@
-pub mod defaults;
-pub mod edit;
-pub mod file;
-pub mod in_game;
-pub mod read;
-pub mod settings_layout;
+pub mod in_game_settings;
+mod settings_defaults;
+pub mod settings_edit;
+pub mod settings_file;
+mod settings_layout;
+mod settings_read;

@@ -1,43 +1,33 @@
-//Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use number_guessing_game::{
-    menus::start::main_menu,
+    menus::start_menu::main_menu,
     utilities::{
-        cls_scr::cls_title, errors::err_print, score_board::file::read_score_file,
-        settings::file::settings_file,
+        cls_scr::cls_title,
+        errors::err_print,
+        score_board::score_file::score_file,
+        settings::settings_file::settings_file,
     },
-    ErrFormat, RuntimeFunctionBlob,
 };
-
-//Logiciel mère.
 fn main() {
-    //
+    let mut wrong: bool = false;
+    let mut high_scores: Vec<String>;
+    let mut msg: String = String::new();
     cls_title();
-
-    let settings_loading_check: Result<RuntimeFunctionBlob, ErrFormat> = settings_file();
-
-    //Initialisation des vars, constantes et plages si applicable.
-    match settings_loading_check {
+    match settings_file() {
         Ok(mut runtime_blob) => {
-            let score_loading_check: Result<Vec<String>, ErrFormat> =
-                read_score_file(&runtime_blob);
-
-            let high_scores: Vec<String> = match &score_loading_check {
-                Ok(_) => score_loading_check.unwrap(),
-                Err(error_handler) => {
-                    err_print(error_handler);
-                    score_loading_check.unwrap()
+            high_scores = match &score_file(&runtime_blob) {
+                Ok(success) => success.to_owned(),
+                Err(error) => {
+                    err_print(error);
+                    return;
                 }
             };
 
             while !&runtime_blob.core_functions.stop {
-                runtime_blob = main_menu(runtime_blob, &high_scores)
-            }
-
-            runtime_blob
-        }
-        Err(ref error_handler) => {
-            err_print(error_handler);
-            settings_loading_check.unwrap()
+                (runtime_blob, high_scores, wrong, msg) = main_menu(runtime_blob, high_scores, wrong, msg);
+            };
+        },
+        Err(error) => {
+            err_print(&error);
         }
     };
 }

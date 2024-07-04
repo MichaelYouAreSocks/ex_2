@@ -1,6 +1,9 @@
 //Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
-    utilities::{cls_scr::cls_title, questions::numeric_input},
+    utilities::{
+        cls_scr::cls_title,
+        inputs::{name_input, numeric_input},
+    },
     RuntimeFunctionBlob,
 };
 use rand::Rng;
@@ -62,7 +65,20 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
             }
             //Affiche un message indiquant que le joueur à gagnié et quel numéro était le bon.
             Ordering::Equal => {
+                runtime_blob = name_input(runtime_blob);
                 cls_title();
+                runtime_blob
+                    .core_functions
+                    .last_game_score
+                    .push(runtime_blob.settings.max_range.to_string());
+                runtime_blob
+                    .core_functions
+                    .last_game_score
+                    .push(tries.to_string());
+                runtime_blob
+                    .core_functions
+                    .last_game_score
+                    .push(runtime_blob.settings.max_tries.to_string());
                 runtime_blob.comunication.msg =
                     format!("You win! The correct number was: '{}'", secret_number);
                 return runtime_blob;
