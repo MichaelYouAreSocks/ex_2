@@ -11,13 +11,13 @@ use {
 };
 
 pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
-    let settings_raw: String;
-
     let RuntimeFunctionBlob {
         settings,
         core_functions,
         comunication,
     } = default_settings();
+
+    let settings_raw: String;
 
     match open_and_read_existing_file(&core_functions.settings_file_path) {
         Ok(settings_file) => {

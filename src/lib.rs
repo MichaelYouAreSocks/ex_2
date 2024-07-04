@@ -2,7 +2,6 @@ pub mod game;
 pub mod menus;
 pub mod utilities;
 
-//
 #[derive(Clone)]
 pub struct Settings {
     pub max_range: u32,     //le plus grand numéro de la plâge à chercher.
@@ -15,7 +14,6 @@ pub struct Settings {
     pub settings_count: u8, //Quantité de variables qui sont des options pour le joueur.
 }
 
-//
 #[derive(Clone, Debug)]
 pub struct ErrFormat {
     pub code: u8,     //Numéro du code d'erreur.
@@ -23,10 +21,9 @@ pub struct ErrFormat {
     pub msg: String,  //Message pour aider à diagnostiquer l'erreur.
 }
 
-//
 #[derive(Clone)]
 pub struct CoreFunctions {
-    pub last_game_score: Vec<String>, //
+    pub last_game_score: Vec<String>, //Concatène les meilleurs scores des dernières parties.
     pub first_cycle: bool,            //Détecte si le joueur joue sa première partie.
     pub stop: bool,                   //Permet de quiter le jeu.
     pub error_handler: ErrFormat,     //Concatène tout ce qui se rapport à une erreure.
@@ -34,7 +31,6 @@ pub struct CoreFunctions {
     pub score_file_path: String,      //Contien l'emplacement par défaut du fichier de scores.
 }
 
-//
 #[derive(Clone)]
 pub struct Comunication {
     pub msg: String,           //Concatène les messages pour l'utilisateur.

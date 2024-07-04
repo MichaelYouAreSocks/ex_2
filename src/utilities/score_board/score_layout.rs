@@ -14,11 +14,11 @@ pub fn score_layout(high_scores: &Vec<String>) -> Result<String, ErrFormat> {
         score_layout = format!(
             "\n{}:\t{}{}{}{}{}",
             match score_rank {
-                0 => format!("{}st\t", score_rank_plus_1),
-                1 => format!("{}nd\t", score_rank_plus_1),
-                2 => format!("{}rd\t", score_rank_plus_1),
-                3..=9 => format!("{}th\t", score_rank_plus_1),
-                10 => format!("{}th", score_rank_plus_1),
+                0 => format!("\t{}st\t", score_rank_plus_1),
+                1 => format!("\t{}nd\t", score_rank_plus_1),
+                2 => format!("\t{}rd\t", score_rank_plus_1),
+                3..=9 => format!("\t{}th\t", score_rank_plus_1),
+                10 => format!("\t{}th", score_rank_plus_1),
                 _ => return Err(error_handling(31)),
             },
             high_scores[score_rank].to_string(),
@@ -45,13 +45,6 @@ fn tabulation_counter(size: usize) -> Result<String, ErrFormat> {
         1 => "\t",
         2 => "\t\t",
         3 => "\t\t\t",
-        4 => "\t\t\t\t",
-        5 => "\t\t\t\t\t",
-        6 => "\t\t\t\t\t\t",
-        7 => "\t\t\t\t\t\t\t",
-        8 => "\t\t\t\t\t\t\t\t",
-        9 => "\t\t\t\t\t\t\t\t\t",
-        10 => "\t\t\t\t\t\t\t\t\t\t",
         _ => return Err(error_handling(31)),
     }
     .to_string());

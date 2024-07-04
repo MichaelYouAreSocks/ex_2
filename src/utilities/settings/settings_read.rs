@@ -1,6 +1,7 @@
-use std::str::Lines;
-
-use crate::{ErrFormat, RuntimeFunctionBlob};
+use {
+    crate::{ErrFormat, RuntimeFunctionBlob},
+    std::str::Lines,
+};
 
 pub fn settings_importer(
     settings_raw: String,
@@ -13,14 +14,11 @@ pub fn settings_importer(
     } = runtime_blob;
 
     let mut imported_settings: u8 = 0;
-    let settings_line_count: usize;
-    let mut settings_as_lines: Lines;
+    let mut settings_as_lines: Lines = settings_raw.lines();
+    let settings_line_count: usize = settings_raw.lines().count();
 
-    settings_as_lines = settings_raw.lines();
-
-    settings_line_count = settings_raw.as_str().lines().count();
     for lines_searched in 0..settings_line_count {
-        let individual_setting = match settings_as_lines.next() {
+        let individual_setting: &str = match settings_as_lines.next() {
             Some(tmp) => tmp,
             None => break,
         };

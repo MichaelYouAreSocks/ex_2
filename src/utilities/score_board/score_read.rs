@@ -1,29 +1,33 @@
-use crate::{ErrFormat, RuntimeFunctionBlob};
+use {
+    crate::{utilities::errors::error_handling, ErrFormat},
+    std::str::Lines,
+};
 
-use super::score_defaults::default_scores;
+pub fn score_importer(score_raw: String) -> Result<Vec<String>, ErrFormat> {
+    let mut high_score: Vec<String> = Vec::new();
+    let mut imported_scores: usize = 0;
+    let mut score_as_lines: Lines = score_raw.lines();
+    let score_line_count: u8 = score_raw.lines().count() as u8;
 
-pub fn score_importer(
-    score_raw: &String,
-    runtime_blob: &RuntimeFunctionBlob,
-) -> Result<Vec<String>, ErrFormat> {
-    let RuntimeFunctionBlob {
-        comunication: _,
-        core_functions,
-        settings: _,
-    } = runtime_blob;
-
-    let mut high_scores: Vec<String> = default_scores();
-
-    let mut scores_as_lines = score_raw.lines();
-
-    for _ in 0..9 {
-        //
-        let imported_score = match scores_as_lines.next() {
+    for lines_searched in 0..=score_line_count - 1 {
+        let individual_score: &str = match score_as_lines.next() {
             Some(tmp) => tmp,
             None => break,
         };
-        high_scores.push(imported_score.to_string());
+        match imported_scores {
+            0..=100 => {
+                high_score[imported_scores].push_str(individual_score);
+                imported_scores = imported_scores + 1;
+
+                if lines_searched > score_line_count {
+                    return Err(error_handling(101));
+                } else {
+                    error_handling(101)
+                }
+            }
+            _ => error_handling(101),
+        };
     }
 
-    Ok(high_scores)
+    Ok(high_score)
 }

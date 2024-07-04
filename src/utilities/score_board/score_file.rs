@@ -1,15 +1,12 @@
-use std::io::read_to_string;
-
-use crate::{
-    utilities::{
-        errors::error_handling,
-        file::open_file::open_and_read_existing_file,
+use {
+    super::{
+        score_defaults::default_scores, score_edit::save_score_to_file, score_read::score_importer,
     },
-    ErrFormat, RuntimeFunctionBlob,
-};
-
-use super::{
-    score_defaults::default_scores, score_read::score_importer,
+    crate::{
+        utilities::{errors::error_handling, file::open_file::open_and_read_existing_file},
+        ErrFormat, RuntimeFunctionBlob,
+    },
+    std::io::read_to_string,
 };
 
 pub fn score_file(runtime_blob: &RuntimeFunctionBlob) -> Result<Vec<String>, ErrFormat> {
@@ -20,15 +17,14 @@ pub fn score_file(runtime_blob: &RuntimeFunctionBlob) -> Result<Vec<String>, Err
     } = &runtime_blob;
 
     let score_raw: String;
-    let mut high_scores: Vec<String> = default_scores();
 
     match open_and_read_existing_file(&core_functions.score_file_path) {
         Ok(scores_file) => {
             score_raw = match read_to_string(scores_file) {
-                Ok(score_raw) => score_raw,
-                Err(_) => return Err(error_handling(021)),
+                Ok(success) => success,
+                Err(_) => return Err(error_handling(011)),
             };
-            high_scores = match score_importer(&score_raw, runtime_blob) {
+            let high_scores = match score_importer(score_raw) {
                 Ok(success) => success,
                 Err(error) => return Err(error),
             };
@@ -37,7 +33,13 @@ pub fn score_file(runtime_blob: &RuntimeFunctionBlob) -> Result<Vec<String>, Err
         }
 
         Err(_) => {
-            return Err(error_handling(011));
+            match save_score_to_file(runtime_blob, &default_scores()) {
+                Ok(_) => {
+                    println!("Default high scores were loaded.");
+                    return Ok(default_scores());
+                }
+                Err(error) => return Err(error),
+            };
         }
     }
 }

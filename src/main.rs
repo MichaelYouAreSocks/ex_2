@@ -1,9 +1,7 @@
 use number_guessing_game::{
     menus::start_menu::main_menu,
     utilities::{
-        cls_scr::cls_title,
-        errors::err_print,
-        score_board::score_file::score_file,
+        cls_scr::cls_title, errors::err_print, score_board::score_file::score_file,
         settings::settings_file::settings_file,
     },
 };
@@ -23,9 +21,10 @@ fn main() {
             };
 
             while !&runtime_blob.core_functions.stop {
-                (runtime_blob, high_scores, wrong, msg) = main_menu(runtime_blob, high_scores, wrong, msg);
-            };
-        },
+                (runtime_blob, high_scores, wrong, msg) =
+                    main_menu(runtime_blob, high_scores, wrong, msg);
+            }
+        }
         Err(error) => {
             err_print(&error);
         }

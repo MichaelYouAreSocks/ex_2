@@ -25,7 +25,7 @@ pub fn default_settings() -> RuntimeFunctionBlob {
             msg: String::new(),
         },
         settings_file_path: String::from("settings.bin"),
-        score_file_path: String::from("score_board.bin"),
+        score_file_path: String::from("scores.bin"),
     };
 
     //

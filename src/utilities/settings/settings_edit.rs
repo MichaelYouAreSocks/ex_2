@@ -1,6 +1,8 @@
-use super::settings_layout::settings_layout;
-use crate::{utilities::errors::error_handling, RuntimeFunctionBlob};
-use std::fs::write;
+use {
+    super::settings_layout::settings_layout,
+    crate::{utilities::errors::error_handling, RuntimeFunctionBlob},
+    std::fs::write,
+};
 
 pub fn save_setting_to_file(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
     match write(

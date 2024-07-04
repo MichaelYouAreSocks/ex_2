@@ -12,7 +12,6 @@ pub fn main_menu(
     mut wrong: bool,
     mut end_game_msg: String,
 ) -> (RuntimeFunctionBlob, Vec<String>, bool, String) {
-
     runtime_blob.comunication.msg = start_menu_layout(&runtime_blob, &high_scores);
 
     runtime_blob.comunication.user_in_alpha = yes_no_else_input(&runtime_blob.comunication, &wrong);
@@ -49,7 +48,7 @@ pub fn main_menu(
             match show_score_board(&high_scores) {
                 Ok(()) => {
                     runtime_blob.comunication.msg = end_game_msg.to_owned();
-                },
+                }
                 Err(error) => {
                     runtime_blob.core_functions.stop = true;
                     runtime_blob.core_functions.error_handler = error;
