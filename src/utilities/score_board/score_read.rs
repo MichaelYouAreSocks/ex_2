@@ -1,33 +1,30 @@
-use {
-    crate::{utilities::errors::error_handling, ErrFormat},
-    std::str::Lines,
-};
+use std::str::Lines;
 
-pub fn score_importer(score_raw: String) -> Result<Vec<String>, ErrFormat> {
-    let mut high_score: Vec<String> = Vec::new();
-    let mut imported_scores: usize = 0;
+use crate::ErrFormat;
+
+pub fn score_importer(score_raw: &str) -> Result<Vec<String>, ErrFormat> {
+    let mut tmp: Vec<&str>;
+    let mut high_score: Vec<String> = vec![];
+    let mut result: String;
+    let mut last_96_ranks: String;
     let mut score_as_lines: Lines = score_raw.lines();
-    let score_line_count: u8 = score_raw.lines().count() as u8;
+    let score_line_count: usize = score_raw.lines().count();
+    score_as_lines.nth(2);
 
-    for lines_searched in 0..=score_line_count - 1 {
-        let individual_score: &str = match score_as_lines.next() {
-            Some(tmp) => tmp,
-            None => break,
-        };
-        match imported_scores {
-            0..=100 => {
-                high_score[imported_scores].push_str(individual_score);
-                imported_scores = imported_scores + 1;
-
-                if lines_searched > score_line_count {
-                    return Err(error_handling(101));
-                } else {
-                    error_handling(101)
+    for lines_counted in 0..score_line_count {
+        if let Some(line) = score_as_lines.next() {
+            tmp = line.split('\t').collect();
+            for column in 0..tmp.iter().count() {
+                last_96_ranks = (lines_counted + 1).to_string() + "th :";
+                result = match tmp[column] {
+                    "" | "1st :" | "2nd :" | "3rd :" => continue,
+                    msg if msg == last_96_ranks => continue,
+                    _ => tmp[column],
                 }
+                .to_string();
+                high_score.push(result);
             }
-            _ => error_handling(101),
-        };
+        }
     }
-
     Ok(high_score)
 }

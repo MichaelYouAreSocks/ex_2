@@ -24,14 +24,13 @@ pub fn score_file(runtime_blob: &RuntimeFunctionBlob) -> Result<Vec<String>, Err
                 Ok(success) => success,
                 Err(_) => return Err(error_handling(011)),
             };
-            let high_scores = match score_importer(score_raw) {
+            let high_scores = match score_importer(&score_raw.as_str()) {
                 Ok(success) => success,
                 Err(error) => return Err(error),
             };
             for _ in settings.min_score..=settings.max_score {}
             Ok(high_scores)
         }
-
         Err(_) => {
             match save_score_to_file(runtime_blob, &default_scores()) {
                 Ok(_) => {

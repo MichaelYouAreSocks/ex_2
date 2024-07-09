@@ -37,11 +37,9 @@ pub fn numeric_input(msg: &String) -> u32 {
 
 pub fn yes_no_else_input(comunication: &Comunication, wrong: &bool) -> String {
     let mut user_in_alpha: String = String::new();
-
     match wrong {
         false => println!("{}", comunication.msg),
         true => {
-            cls_title();
             println!(
                 "{}\n'{}' isn't a valid input. Please try again.",
                 comunication.msg, comunication.user_in_alpha
