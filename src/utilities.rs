@@ -1,6 +1,5 @@
-pub mod cls_scr;
-pub mod errors;
 pub mod file;
-pub mod inputs;
+pub mod misc;
 pub mod score_board;
 pub mod settings;
+pub mod start_menu;

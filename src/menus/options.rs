@@ -1,56 +1,36 @@
-//Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
     utilities::{
-        cls_scr::cls_title,
-        inputs::numeric_input,
+        misc::{cls_scr::cls_title, inputs::numeric_input},
         settings::{
             in_game_settings::{game_hint, game_size, game_tries},
             settings_edit::save_setting_to_file,
+            settings_layout::settings_game_layout,
         },
     },
     RuntimeFunctionBlob,
 };
 
-//Menu d'options de jeu.
 pub fn options_menu(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
-    'options_menu_loop: loop {
-        //Concatène le menu des option.
-        let msg: String = format!(
-            "Options:\n{}{}{}{}\n{}{}\n{}{}\n{}",
-            "1 -> Size of search.\tMin: ",
-            runtime_blob.settings.min_range,
-            "\tMax: ",
-            runtime_blob.settings.max_range,
-            "2 -> Number of tries.\t: ",
-            runtime_blob.settings.max_tries,
-            "3 -> Game hints.\t: ",
-            runtime_blob.settings.guess_hint,
-            "0 -> Back to main menu."
-        );
+    'menu: loop {
+        let msg: String = settings_game_layout(&runtime_blob.settings);
 
-        //Permet de choisir quelle option le joueur aimerait changer.
         match numeric_input(&msg) {
-            //Retourne au menu d'acueil.
             0 => {
                 cls_title();
-                break 'options_menu_loop;
+                break 'menu;
             }
-            //Option de la taille de la plage à chercher chaque manche.
             1 => {
                 cls_title();
                 runtime_blob = save_setting_to_file(game_size(runtime_blob));
             }
-            //Option du nombre de tentatives par manches.
             2 => {
                 cls_title();
                 runtime_blob = save_setting_to_file(game_tries(runtime_blob));
             }
-            //Option d'indice.
             3 => {
                 cls_title();
                 runtime_blob = save_setting_to_file(game_hint(runtime_blob));
             }
-            //Atrappe touts les autres inputs et indique qu'ils sont incorrect.
             _ => {
                 cls_title();
                 println!(

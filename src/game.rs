@@ -1,13 +1,14 @@
-//Initialisation des "crates" ou des librairies suplémentaires nécessaires.
-use crate::{
-    utilities::{
-        cls_scr::cls_title,
-        inputs::{name_input, numeric_input},
+use {
+    crate::{
+        utilities::misc::{
+            cls_scr::cls_title,
+            inputs::{name_input, numeric_input},
+        },
+        RuntimeFunctionBlob,
     },
-    RuntimeFunctionBlob,
+    rand::Rng,
+    std::cmp::Ordering,
 };
-use rand::Rng;
-use std::cmp::Ordering;
 
 //Fonction de jeu.
 pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {

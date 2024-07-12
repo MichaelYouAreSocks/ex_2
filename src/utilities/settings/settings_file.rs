@@ -2,7 +2,7 @@ use {
     super::{settings_edit::save_setting_to_file, settings_read::settings_importer},
     crate::{
         utilities::{
-            errors::error_handling, file::open_file::open_and_read_existing_file,
+            file::open_file::load_existing_file, misc::errors::error_handling,
             settings::settings_defaults::default_settings,
         },
         ErrFormat, RuntimeFunctionBlob,
@@ -16,20 +16,15 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
         core_functions,
         comunication,
     } = default_settings();
+    let error_code = 010;
 
     let settings_raw: String;
 
-    match open_and_read_existing_file(&core_functions.settings_file_path) {
+    match load_existing_file(&core_functions.settings_file_path, error_code) {
         Ok(settings_file) => {
             settings_raw = match read_to_string(settings_file) {
                 Ok(settings_raw) => settings_raw,
                 Err(_) => return Err(error_handling(010)),
-            };
-
-            let runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob {
-                settings,
-                core_functions,
-                comunication,
             };
 
             let (
@@ -39,7 +34,14 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
                     core_functions,
                     comunication,
                 },
-            ) = settings_importer(settings_raw, runtime_blob);
+            ) = settings_importer(
+                settings_raw,
+                RuntimeFunctionBlob {
+                    settings,
+                    core_functions,
+                    comunication,
+                },
+            );
 
             if imported_settings < settings.settings_count {
                 println!(
@@ -52,13 +54,11 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
                 println!("Settings loaded from file.");
             };
 
-            let runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob {
+            Ok(RuntimeFunctionBlob {
                 settings,
                 core_functions,
                 comunication,
-            };
-
-            Ok(runtime_blob)
+            })
         }
         Err(_) => {
             let mut runtime_blob: RuntimeFunctionBlob = RuntimeFunctionBlob {

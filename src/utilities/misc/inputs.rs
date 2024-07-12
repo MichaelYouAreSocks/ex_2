@@ -1,4 +1,4 @@
-use crate::{utilities::cls_scr::cls_title, Comunication, RuntimeFunctionBlob};
+use crate::{utilities::misc::cls_scr::cls_title, Comunication, RuntimeFunctionBlob};
 use std::io;
 
 pub fn numeric_input(msg: &String) -> u32 {

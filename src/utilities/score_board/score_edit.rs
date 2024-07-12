@@ -1,20 +1,20 @@
 use {
     crate::{
-        utilities::{errors::error_handling, score_board::score_layout::score_layout},
-        ErrFormat, RuntimeFunctionBlob,
+        utilities::{misc::errors::error_handling, score_board::score_layout::score_file_layout},
+        CoreFunctions, ErrFormat,
     },
     std::fs::write,
 };
 
 pub fn save_score_to_file(
-    runtime_blob: &RuntimeFunctionBlob,
+    core_functions: &CoreFunctions,
     high_scores: &Vec<String>,
 ) -> Result<String, ErrFormat> {
     match write(
-        &runtime_blob.core_functions.score_file_path,
-        match score_layout(high_scores) {
+        &core_functions.score_file_path,
+        match score_file_layout(high_scores) {
             Ok(success) => success,
-            Err(_) => return Err(error_handling(021)),
+            Err(error) => return Err(error),
         },
     ) {
         Ok(_) => Ok(format!("Default high scores were loaded.")),

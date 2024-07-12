@@ -1,5 +1,5 @@
 use crate::{
-    utilities::{
+    utilities::misc::{
         cls_scr::cls_title,
         inputs::{numeric_input, yes_no_else_input},
     },

@@ -1,8 +1,10 @@
-//Initialisation des "crates" ou des librairies suplémentaires nécessaires.
 use crate::{
     game::game,
-    menus::{options::options_menu, scores::show_score_board, start_layout::start_menu_layout},
-    utilities::{cls_scr::cls_title, inputs::yes_no_else_input},
+    menus::{options::options_menu, scores::show_score_board},
+    utilities::{
+        misc::{cls_scr::cls_title, inputs::yes_no_else_input},
+        start_menu::start_layout::start_menu_layout,
+    },
     RuntimeFunctionBlob,
 };
 
