@@ -13,7 +13,7 @@ pub fn default_settings() -> RuntimeFunctionBlob {
     };
 
     let core_functions: CoreFunctions = CoreFunctions {
-        last_game_score: vec!["".to_string()],
+        high_score: vec![String::new()],
         first_cycle: true,
         stop: false,
         error_handler: ErrFormat {

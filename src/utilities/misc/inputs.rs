@@ -1,4 +1,4 @@
-use crate::{utilities::misc::cls_scr::cls_title, Comunication, RuntimeFunctionBlob};
+use crate::{utilities::misc::cls_scr::cls_title, Comunication};
 use std::io;
 
 pub fn numeric_input(msg: &String) -> u32 {
@@ -54,17 +54,17 @@ pub fn yes_no_else_input(comunication: &Comunication, wrong: &bool) -> String {
     user_in_alpha.trim().to_string()
 }
 
-pub fn name_input(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
+pub fn name_input(mut comunication: Comunication) -> Comunication {
     let mut wrong: bool = false;
-    let mut user_in_alpha_num: String;
-    runtime_blob.comunication.msg = format!("\t\tPlease enter a 4 letter name :\n\n\t\t\t- ");
-    while wrong {
+    //let mut user_in_alpha: String;
+    comunication.msg = format!("{}{}", comunication.msg, "\nPlease enter a 3 letter name :\n\n");
+    loop {
         cls_title();
-        user_in_alpha_num = yes_no_else_input(&runtime_blob.comunication, &wrong);
-        wrong = match user_in_alpha_num.chars().count() {
-            4 => false,
+        comunication.user_in_alpha = yes_no_else_input(&comunication, &wrong);
+        wrong = match comunication.user_in_alpha.chars().count() {
+            3 => false,
             _ => true,
         };
+        if !wrong {return comunication}
     }
-    return runtime_blob;
 }

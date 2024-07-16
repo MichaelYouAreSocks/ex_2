@@ -1,11 +1,9 @@
-
-
 pub fn default_scores() -> Vec<String> {
     let mut scores: Vec<String> = vec![];
 
     scores.push("1000".to_string());
     scores.push("9/10".to_string());
-    scores.push("JOS".to_string());
+    scores.push("Jos".to_string());
 
     scores.push("500".to_string());
     scores.push("8/8".to_string());
@@ -45,47 +43,3 @@ pub fn default_scores() -> Vec<String> {
 
     scores
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

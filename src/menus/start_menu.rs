@@ -10,7 +10,7 @@ use crate::{
 
 pub fn main_menu(
     mut runtime_blob: RuntimeFunctionBlob,
-    high_scores: Vec<String>,
+    mut high_scores: Vec<String>,
     mut wrong: bool,
     mut end_game_msg: String,
 ) -> (RuntimeFunctionBlob, Vec<String>, bool, String) {
@@ -47,8 +47,9 @@ pub fn main_menu(
         }
         "b" | "B" | "r" | "R" | "3" => {
             cls_title();
-            match show_score_board(&high_scores) {
-                Ok(()) => {
+            match show_score_board(&runtime_blob) {
+                Ok(scores) => {
+                    high_scores = scores;
                     runtime_blob.comunication.msg = end_game_msg.to_owned();
                 }
                 Err(error) => {
