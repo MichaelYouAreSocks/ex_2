@@ -11,12 +11,12 @@ use {
 
 pub fn score_file(
     RuntimeFunctionBlob {
-        core_functions,
-        comunication: _,
+        mut core_functions,
+        comunication,
         settings,
-    }: &RuntimeFunctionBlob,
-) -> Result<Vec<String>, ErrFormat> {
-    let error_code = 011;
+    }: RuntimeFunctionBlob,
+) -> Result<RuntimeFunctionBlob, ErrFormat> {
+    let error_code = 11;
 
     let score_raw: String;
 
@@ -24,21 +24,32 @@ pub fn score_file(
         Ok(scores_file) => {
             score_raw = match read_to_string(scores_file) {
                 Ok(success) => success,
-                Err(_) => return Err(error_handling(011)),
+                Err(_) => return Err(error_handling(11)),
             };
-            let high_scores = score_importer(&score_raw.as_str());
+            core_functions.high_score = score_importer(score_raw.as_str());
             for _ in settings.min_score..=settings.max_score {}
             println!("Scores loaded from file.");
-            Ok(high_scores)
+            let runtime_blob = RuntimeFunctionBlob {
+                core_functions,
+                comunication,
+                settings,
+            };
+            Ok(runtime_blob)
         }
         Err(_) => {
-            match save_score_to_file(core_functions, &default_scores()) {
+            core_functions.high_score = default_scores();
+            match save_score_to_file(&core_functions) {
                 Ok(_) => {
                     println!("Default score file created.");
-                    return Ok(default_scores());
+                    let runtime_blob = RuntimeFunctionBlob {
+                        core_functions,
+                        comunication,
+                        settings,
+                    };
+                    Ok(runtime_blob)
                 }
-                Err(error) => return Err(error),
-            };
+                Err(error) => Err(error),
+            }
         }
     }
 }

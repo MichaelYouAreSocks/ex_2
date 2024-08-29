@@ -1,6 +1,6 @@
 use {
-    crate::{ErrFormat, RuntimeFunctionBlob},
-    std::str::Lines,
+    crate::{utilities::misc::errors::error_handling, RuntimeFunctionBlob},
+    std::{num::ParseIntError, str::Lines},
 };
 
 pub fn settings_importer(
@@ -13,103 +13,58 @@ pub fn settings_importer(
         comunication,
     } = runtime_blob;
 
+    let mut lines_searched: u8 = 0;
     let mut imported_settings: u8 = 0;
+    let mut settings_name_value: Vec<&str>;
     let mut settings_as_lines: Lines = settings_raw.lines();
-    let settings_line_count: usize = settings_raw.lines().count();
+    let settings_line_count: u8 = settings_raw.lines().count() as u8;
 
-    for lines_searched in 0..settings_line_count {
-        let individual_setting: &str = match settings_as_lines.next() {
-            Some(tmp) => tmp,
+    while imported_settings < settings.settings_count {
+        core_functions.error_handler = error_handling(210 + imported_settings);
+
+        settings_name_value = match settings_as_lines.next() {
+            Some(tmp) => tmp.trim().split(" == ").collect::<Vec<_>>(),
             None => break,
         };
-        core_functions.error_handler = match imported_settings {
-            0 => {
-                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
+
+        match settings_name_value.remove(0) {
+            "[Max_range]" => {
+                if let Ok(tmp) = settings_value_reader(settings_name_value) {
                     settings.max_range = tmp;
-                    imported_settings = imported_settings + 1;
-                };
-                if lines_searched > 5 {
-                    break;
-                } else {
-                    ErrFormat {
-                        code: 010,
-                        name: String::from("Max_range"),
-                        msg: String::from("a number from 1 to 4'294'967'295"),
-                    }
+                    imported_settings += 1;
                 }
             }
-            1 => {
-                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
+            "[Min_range]" => {
+                if let Ok(tmp) = settings_value_reader(settings_name_value) {
                     settings.min_range = tmp;
-                    imported_settings = imported_settings + 1;
-                };
-                if lines_searched > 8 {
-                    break;
-                } else {
-                    ErrFormat {
-                        code: 011,
-                        name: String::from("Min_range"),
-                        msg: String::from("a number from 0 to 4'294'967'294"),
-                    }
+                    imported_settings += 1;
                 }
             }
-            2 => {
-                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
+            "[Max_tries]" => {
+                if let Ok(tmp) = settings_value_reader(settings_name_value) {
                     settings.max_tries = tmp;
-                    imported_settings = imported_settings + 1;
-                };
-                if lines_searched > 11 {
-                    break;
-                } else {
-                    ErrFormat {
-                        code: 012,
-                        name: String::from("Max_tries"),
-                        msg: String::from("a number from 1 to 4'294'967'295"),
-                    }
+                    imported_settings += 1;
                 }
             }
-            3 => {
-                if let Ok(tmp) = individual_setting.trim().parse::<u32>() {
+            "[Min_tries]" => {
+                if let Ok(tmp) = settings_value_reader(settings_name_value) {
                     settings.min_tries = tmp;
-
-                    imported_settings = imported_settings + 1;
-                };
-
-                if lines_searched > 14 {
-                    break;
-                } else {
-                    ErrFormat {
-                        code: 013,
-                        name: String::from("Min_tries"),
-                        msg: String::from("a number from 1 to 4'294'967'295"),
-                    }
+                    imported_settings += 1;
                 }
             }
-            4 => {
-                if let Ok(tmp) = individual_setting.trim().parse::<bool>() {
+            "[Guess_hint]" => {
+                if let Ok(tmp) = settings_name_value.remove(0).trim().parse::<bool>() {
                     settings.guess_hint = tmp;
 
-                    imported_settings = imported_settings + 1;
-                };
-
-                if lines_searched > 17 {
-                    break;
-                } else {
-                    ErrFormat {
-                        code: 014,
-                        name: String::from("Guess_hint"),
-                        msg: String::from("'true' or 'false'"),
-                    }
+                    imported_settings += 1;
                 }
             }
-            _ => core_functions.error_handler,
+            _ => core_functions.error_handler = error_handling(214),
         };
-
-        if imported_settings == settings.settings_count {
+        lines_searched += 1;
+        if lines_searched >= settings_line_count {
             break;
-        } else {
-            continue;
-        };
+        }
     }
 
     runtime_blob = RuntimeFunctionBlob {
@@ -119,4 +74,8 @@ pub fn settings_importer(
     };
 
     (imported_settings, runtime_blob)
+}
+
+fn settings_value_reader(mut settings_name_value: Vec<&str>) -> Result<u32, ParseIntError> {
+    settings_name_value.remove(0).trim().parse::<u32>()
 }

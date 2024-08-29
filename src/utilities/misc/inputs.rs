@@ -56,15 +56,16 @@ pub fn yes_no_else_input(comunication: &Comunication, wrong: &bool) -> String {
 
 pub fn name_input(mut comunication: Comunication) -> Comunication {
     let mut wrong: bool = false;
-    //let mut user_in_alpha: String;
-    comunication.msg = format!("{}{}", comunication.msg, "\nPlease enter a 3 letter name :\n\n");
+    comunication.msg = format!(
+        "{}{}",
+        comunication.msg, "\nPlease enter a 3 letter name :\n\n"
+    );
     loop {
         cls_title();
         comunication.user_in_alpha = yes_no_else_input(&comunication, &wrong);
-        wrong = match comunication.user_in_alpha.chars().count() {
-            3 => false,
-            _ => true,
-        };
-        if !wrong {return comunication}
+        wrong = !matches!(comunication.user_in_alpha.chars().count(), 3);
+        if !wrong {
+            return comunication;
+        }
     }
 }

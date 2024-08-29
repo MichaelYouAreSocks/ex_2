@@ -6,18 +6,15 @@ use {
     std::fs::write,
 };
 
-pub fn save_score_to_file(
-    core_functions: &CoreFunctions,
-    high_scores: &Vec<String>,
-) -> Result<String, ErrFormat> {
+pub fn save_score_to_file(core_functions: &CoreFunctions) -> Result<String, ErrFormat> {
     match write(
         &core_functions.score_file_path,
-        match score_file_layout(high_scores) {
+        match score_file_layout(&core_functions.high_score) {
             Ok(success) => success,
             Err(error) => return Err(error),
         },
     ) {
-        Ok(_) => Ok(format!("Default high scores were loaded.")),
-        Err(_) => Err(error_handling(021)),
+        Ok(_) => Ok("Default high scores were loaded.".to_string()),
+        Err(_) => Err(error_handling(21)),
     }
 }

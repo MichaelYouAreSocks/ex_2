@@ -11,7 +11,7 @@ pub fn save_setting_to_file(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFun
     ) {
         Ok(_) => runtime_blob,
         Err(_) => {
-            runtime_blob.core_functions.error_handler = error_handling(020);
+            runtime_blob.core_functions.error_handler = error_handling(20);
             runtime_blob.core_functions.stop = true;
             runtime_blob
         }

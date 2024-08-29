@@ -2,7 +2,7 @@ use console::Term;
 
 pub fn cls_title() {
     let msg = format!("{}{}", "Guess the number!\n", "-----------------");
-    let err_msg = format!("Couldn't clear terminal, and write game title.");
+    let err_msg = "Couldn't clear terminal, and write game title.".to_string();
     clear_screen(msg, err_msg);
 }
 

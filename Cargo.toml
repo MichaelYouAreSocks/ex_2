@@ -16,3 +16,4 @@ categories = ["command-line-games"]
 [dependencies]
 rand = "0.8.5"
 console = "0.15.8"
+radsort = "0.1.1"

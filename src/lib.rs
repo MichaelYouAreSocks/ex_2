@@ -23,12 +23,12 @@ pub struct ErrFormat {
 
 #[derive(Clone)]
 pub struct CoreFunctions {
-    pub high_score: Vec<String>,    //Concatène les meilleurs scores des dernières parties.
-    pub first_cycle: bool,          //Détecte si le joueur joue sa première partie.
-    pub stop: bool,                 //Permet de quiter le jeu.
-    pub error_handler: ErrFormat,   //Concatène tout ce qui se rapport à une erreure.
+    pub high_score: Vec<String>, //Concatène les meilleurs scores des dernières parties.
+    pub first_cycle: bool,       //Détecte si le joueur joue sa première partie.
+    pub stop: bool,              //Permet de quiter le jeu.
+    pub error_handler: ErrFormat, //Concatène tout ce qui se rapport à une erreure.
     pub settings_file_path: String, //Contien l'emplacement par défaut du fichier de paramêtres.
-    pub score_file_path: String,    //Contien l'emplacement par défaut du fichier de scores.
+    pub score_file_path: String, //Contien l'emplacement par défaut du fichier de scores.
 }
 
 #[derive(Clone)]
@@ -40,7 +40,7 @@ pub struct Comunication {
 
 #[derive(Clone)]
 pub struct RuntimeFunctionBlob {
-    pub settings: Settings,             //Concatène la struct Settings.
-    pub core_functions: CoreFunctions,  //Concatène la struct CoreFunctions.
-    pub comunication: Comunication,     //Concatène la struct Comunication.
+    pub settings: Settings,            //Concatène la struct Settings.
+    pub core_functions: CoreFunctions, //Concatène la struct CoreFunctions.
+    pub comunication: Comunication,    //Concatène la struct Comunication.
 }

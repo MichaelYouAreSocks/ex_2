@@ -2,21 +2,21 @@ use crate::Settings;
 
 pub fn settings_file_layout(settings: &Settings) -> String {
     let layout: String = format!(
-        "{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n{}\n{}\n\n",
+        "{}\n{}\n\n{}{}\n\n{}{}\n\n{}{}\n\n{}{}\n\n{}{}",
         "-This file contains the settings for the Number Guessing Game.",
         "--------------------------------------------------------------",
-        "-Up to what number do you want to guess? [Max_range]",
+        "[Max_range] == ",
         settings.max_range,
-        "-From what number do you want to guess? [Min_range]",
+        "[Min_range] == ",
         settings.min_range,
-        "-How many atempts do you want to guess the random number? [Max_tries]",
+        "[Max_tries] == ",
         settings.max_tries,
-        "-How many atempts do you want to at least have? [Min_tries]",
+        "[Min_tries] == ",
         settings.min_tries,
-        "-Do you want hints while you play? [Guess_hint]",
+        "[Guess_hint] == ",
         settings.guess_hint
     );
-    return layout;
+    layout
 }
 
 pub fn settings_game_layout(settings: &Settings) -> String {

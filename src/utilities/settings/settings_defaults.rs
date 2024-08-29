@@ -21,8 +21,8 @@ pub fn default_settings() -> RuntimeFunctionBlob {
             name: String::new(),
             msg: String::new(),
         },
-        settings_file_path: String::from("settings.bin"),
-        score_file_path: String::from("scores.bin"),
+        settings_file_path: String::from("settings.cfg"),
+        score_file_path: String::from("scores.txt"),
     };
 
     let comunication: Comunication = Comunication {

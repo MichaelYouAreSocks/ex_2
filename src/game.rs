@@ -3,7 +3,8 @@ use {
         utilities::misc::{
             cls_scr::cls_title,
             inputs::{name_input, numeric_input},
-        }, RuntimeFunctionBlob
+        },
+        RuntimeFunctionBlob,
     },
     rand::Rng,
     std::cmp::Ordering,
@@ -56,7 +57,7 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                 let RuntimeFunctionBlob {
                     mut comunication,
                     settings,
-                    mut core_functions
+                    mut core_functions,
                 } = runtime_blob;
                 comunication = name_input(comunication);
                 cls_title();
@@ -68,11 +69,12 @@ pub fn game(mut runtime_blob: RuntimeFunctionBlob) -> RuntimeFunctionBlob {
                     .push(format!("{}/{}", tries, settings.max_tries));
                 core_functions
                     .high_score
-                    .push(format!("{}", comunication.user_in_alpha));
+                    .push(comunication.user_in_alpha.to_string());
+                comunication.msg = format!("You win! The secret number was {}", secret_number);
                 return RuntimeFunctionBlob {
                     comunication,
                     core_functions,
-                    settings
+                    settings,
                 };
             }
         };

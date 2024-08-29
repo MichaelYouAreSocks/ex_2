@@ -16,7 +16,7 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
         core_functions,
         comunication,
     } = default_settings();
-    let error_code = 010;
+    let error_code = 10;
 
     let settings_raw: String;
 
@@ -24,7 +24,7 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
         Ok(settings_file) => {
             settings_raw = match read_to_string(settings_file) {
                 Ok(settings_raw) => settings_raw,
-                Err(_) => return Err(error_handling(010)),
+                Err(_) => return Err(error_handling(10)),
             };
 
             let (
@@ -45,10 +45,8 @@ pub fn settings_file() -> Result<RuntimeFunctionBlob, ErrFormat> {
 
             if imported_settings < settings.settings_count {
                 println!(
-                    "{} should be {}.\n{}",
-                    core_functions.error_handler.name,
-                    core_functions.error_handler.msg,
-                    "Defaults were used instead"
+                    "{} should be {}.\nDefaults were used instead",
+                    core_functions.error_handler.name, core_functions.error_handler.msg
                 );
             } else {
                 println!("Settings loaded from file.");

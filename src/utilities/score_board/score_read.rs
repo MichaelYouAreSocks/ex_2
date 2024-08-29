@@ -16,11 +16,11 @@ pub fn score_importer(score_raw: &str) -> Vec<String> {
         if let Some(line) = score_as_lines.next() {
             tmp = line.split('\t').collect();
 
-            for column in 0..tmp.iter().count() {
-                result = match tmp[column] {
+            for column in tmp {
+                result = match column {
                     "" | "1st" | "2nd" | "3rd" | "|" | "/" => continue,
                     msg if msg == last_96_ranks => continue,
-                    _ => tmp[column],
+                    _ => column,
                 }
                 .to_string();
                 high_score.push(result);
