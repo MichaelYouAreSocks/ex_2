@@ -44,3 +44,11 @@ pub struct RuntimeFunctionBlob {
     pub core_functions: CoreFunctions, //Concatène la struct CoreFunctions.
     pub comunication: Comunication,    //Concatène la struct Comunication.
 }
+
+#[derive(Clone)]
+pub struct Column {
+    pub score: u32,
+    pub number_attempts: u32,
+    pub max_attempts: u32,
+    pub name: String
+}

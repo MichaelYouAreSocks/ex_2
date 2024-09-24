@@ -3,7 +3,7 @@ use {
         score_defaults::default_scores, score_edit::save_score_to_file, score_read::score_importer,
     },
     crate::{
-        utilities::{file::open_file::load_existing_file, misc::errors::error_handling},
+        utilities::{file::open_file::load_existing_file, misc::errors::error_handling}, //score_board::score_sort::score_sorting},
         ErrFormat, RuntimeFunctionBlob,
     },
     std::io::read_to_string,
@@ -27,6 +27,10 @@ pub fn score_file(
                 Err(_) => return Err(error_handling(11)),
             };
             core_functions.high_score = score_importer(score_raw.as_str());
+            //core_functions.high_score = match score_sorting(core_functions.high_score) {
+            //    Ok(success) => success,
+            //    Err(error) => return Err(error)
+            //};
             for _ in settings.min_score..=settings.max_score {}
             println!("Scores loaded from file.");
             let runtime_blob = RuntimeFunctionBlob {
