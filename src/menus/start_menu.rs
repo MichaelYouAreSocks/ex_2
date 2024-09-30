@@ -1,6 +1,6 @@
 use crate::{
     game::game,
-    menus::{options::options_menu, scores::show_score_board},
+    menus::{options_menu::options_menu, scores_menu::show_score_board},
     utilities::{
         misc::{cls_scr::cls_title, inputs::yes_no_else_input},
         score_board::score_edit::save_score_to_file,

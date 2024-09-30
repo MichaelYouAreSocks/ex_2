@@ -1,6 +1,9 @@
 use {
     crate::{utilities::misc::errors::error_handling, RuntimeFunctionBlob},
-    std::{num::ParseIntError, str::Lines},
+    std::{
+        num::ParseIntError,
+        str::{Lines, ParseBoolError},
+    },
 };
 
 pub fn settings_importer(
@@ -29,33 +32,32 @@ pub fn settings_importer(
 
         match settings_name_value.remove(0) {
             "[Max_range]" => {
-                if let Ok(tmp) = settings_value_reader(settings_name_value) {
+                if let Ok(tmp) = settings_u32_reader(settings_name_value) {
                     settings.max_range = tmp;
                     imported_settings += 1;
                 }
             }
             "[Min_range]" => {
-                if let Ok(tmp) = settings_value_reader(settings_name_value) {
+                if let Ok(tmp) = settings_u32_reader(settings_name_value) {
                     settings.min_range = tmp;
                     imported_settings += 1;
                 }
             }
             "[Max_tries]" => {
-                if let Ok(tmp) = settings_value_reader(settings_name_value) {
+                if let Ok(tmp) = settings_u32_reader(settings_name_value) {
                     settings.max_tries = tmp;
                     imported_settings += 1;
                 }
             }
             "[Min_tries]" => {
-                if let Ok(tmp) = settings_value_reader(settings_name_value) {
+                if let Ok(tmp) = settings_u32_reader(settings_name_value) {
                     settings.min_tries = tmp;
                     imported_settings += 1;
                 }
             }
             "[Guess_hint]" => {
-                if let Ok(tmp) = settings_name_value.remove(0).trim().parse::<bool>() {
+                if let Ok(tmp) = settings_bool_reader(settings_name_value) {
                     settings.guess_hint = tmp;
-
                     imported_settings += 1;
                 }
             }
@@ -76,6 +78,9 @@ pub fn settings_importer(
     (imported_settings, runtime_blob)
 }
 
-fn settings_value_reader(mut settings_name_value: Vec<&str>) -> Result<u32, ParseIntError> {
+fn settings_u32_reader(mut settings_name_value: Vec<&str>) -> Result<u32, ParseIntError> {
     settings_name_value.remove(0).trim().parse::<u32>()
+}
+fn settings_bool_reader(mut settings_name_value: Vec<&str>) -> Result<bool, ParseBoolError> {
+    settings_name_value.remove(0).trim().parse::<bool>()
 }

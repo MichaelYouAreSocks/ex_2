@@ -1,9 +1,9 @@
 [package]
 name = "number_guessing_game"
-version = "0.3.2"
+version = "1.0.0"
 authors = ["Josborne,MichaelYouAreSocks"]
 edition = "2021"
-description = "A simple number guessing game with a few quality of life improvements such as:  game size, attempts per round, hints, saving and Loading settings."
+description = "A simple number guessing game with a few quality of life improvements such as:  game size, attempts per round, hints, saving and Loading settings, and more to come."
 readme = "README.md"
 repository = "https://github.com/Jo580rn3/Number-Guessing-Game"
 license = "Apache-2.0 AND GPL-3.0-only"

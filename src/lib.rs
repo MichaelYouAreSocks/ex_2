@@ -2,6 +2,7 @@ pub mod game;
 pub mod menus;
 pub mod utilities;
 
+//Struct contenant les paramêtres quand le programe tourne.
 #[derive(Clone)]
 pub struct Settings {
     pub max_range: u32,     //le plus grand numéro de la plâge à chercher.
@@ -14,6 +15,7 @@ pub struct Settings {
     pub settings_count: u8, //Quantité de variables qui sont des options pour le joueur.
 }
 
+//Struct contenant les donnés d'erreurs.
 #[derive(Clone, Debug)]
 pub struct ErrFormat {
     pub code: u8,     //Numéro du code d'erreur.
@@ -21,6 +23,7 @@ pub struct ErrFormat {
     pub msg: String,  //Message pour aider à diagnostiquer l'erreur.
 }
 
+//Struct contenant les valeurs nécessaire au fonctionnement du jeu.
 #[derive(Clone)]
 pub struct CoreFunctions {
     pub high_score: Vec<String>, //Concatène les meilleurs scores des dernières parties.
@@ -31,6 +34,7 @@ pub struct CoreFunctions {
     pub score_file_path: String, //Contien l'emplacement par défaut du fichier de scores.
 }
 
+//Stuct contenant les divers messages addressés au joueur et les inputs de ce dernier.
 #[derive(Clone)]
 pub struct Comunication {
     pub msg: String,           //Concatène les messages pour l'utilisateur.
@@ -38,6 +42,7 @@ pub struct Comunication {
     pub user_in_u32: u32,      //Concatène les inputs numériques de l'utilisateur.
 }
 
+//Struct concatènant les Structs nécessaire au programe de tourner.
 #[derive(Clone)]
 pub struct RuntimeFunctionBlob {
     pub settings: Settings,            //Concatène la struct Settings.
@@ -45,10 +50,11 @@ pub struct RuntimeFunctionBlob {
     pub comunication: Comunication,    //Concatène la struct Comunication.
 }
 
+//Struct contenant un différant format de donnés que celui utilisé actuellement.
 #[derive(Clone)]
-pub struct Column {
-    pub score: u32,
-    pub number_attempts: u32,
-    pub max_attempts: u32,
-    pub name: String
+pub struct Row {
+    pub score: i64,           //Contien le score actuel.
+    pub number_attempts: u32, //Contien le nombre de tentatives faites.
+    pub max_attempts: u32,    //Contien le nombre de tentatives tôtal.
+    pub name: String,         //Contien le nom du joueur.
 }
